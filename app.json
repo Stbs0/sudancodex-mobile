@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "sudancodex-mobile",
-    "slug": "sudancodex-mobile",
+    "name": "Sudan Codex",
+    "slug": "sudancodex",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -21,7 +21,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "app.sudancodex.mobile"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +34,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "772061dd-b314-4131-a14c-c56f7ad30882"
+      }
+    },
+    "owner": "stbs0"
   }
 }
