@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import { useColorScheme } from "@/components/useColorScheme";
 import {
   DarkTheme,
@@ -5,13 +6,14 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 
-// const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,22 +25,27 @@ export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
-  useEffect(() => {}, []);
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
   const colorScheme = useColorScheme();
+
+  useEffect(() => {}, []);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <SafeAreaProvider>
+            <RootLayoutNav />
+          </SafeAreaProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  );
+}
+
+function RootLayoutNav() {
+  return (
+    <>
       <Stack>
         <Stack.Protected guard={false}>
           <Stack.Screen
@@ -52,6 +59,6 @@ function RootLayoutNav() {
         />
       </Stack>
       <PortalHost />
-    </ThemeProvider>
+    </>
   );
 }
