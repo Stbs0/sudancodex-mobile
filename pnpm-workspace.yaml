@@ -1,3 +1,4 @@
-supportedArchitectures:
-  os:
-    - current
+onlyBuiltDependencies:
+  - '@firebase/util'
+  - protobufjs
+
