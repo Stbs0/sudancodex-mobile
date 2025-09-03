@@ -25,19 +25,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name='index'
         options={{
-          title: "Home",
-
-          tabBarIcon: (props) => (
-            <TabBarIcon
-              name='home'
-              {...props}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name='drugList'
-        options={{
           title: "Drug List",
           tabBarLabel: "Drug List",
 
