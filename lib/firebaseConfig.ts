@@ -1,18 +1,19 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { connectAuthEmulator, getAuth } from "@react-native-firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "@react-native-firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_APIKEY,
-  authDomain: process.env.EXPO_PUBLIC_AUTHDOMAIN,
-  projectId: process.env.EXPO_PUBLIC_PROJECTID,
-  storageBucket: process.env.EXPO_PUBLIC_STORAGEBUCKET,
-  messagingSenderId: process.env.EXPO_PUBLIC_MESSAGINGSENDERID,
-  appId: process.env.EXPO_PUBLIC_APPID,
-  measurementId: process.env.EXPO_PUBLIC_MEASUREMENTID,
-};
+// const firebaseConfig = {
+//   apiKey: process.env.EXPO_PUBLIC_APIKEY,
+//   authDomain: process.env.EXPO_PUBLIC_AUTHDOMAIN,
+//   projectId: process.env.EXPO_PUBLIC_PROJECTID,
+//   storageBucket: process.env.EXPO_PUBLIC_STORAGEBUCKET,
+//   messagingSenderId: process.env.EXPO_PUBLIC_MESSAGINGSENDERID,
+//   appId: process.env.EXPO_PUBLIC_APPID,
+//   measurementId: process.env.EXPO_PUBLIC_MEASUREMENTID,
+// };
 
-const app = initializeApp(firebaseConfig);
-
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const auth = getAuth();
+export const db = getFirestore();
+if (__DEV__) {
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+}
