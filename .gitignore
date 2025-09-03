@@ -41,3 +41,6 @@ android/
 ios/
 
 google-services.json
+.firebaserc
+
+*-debug.log

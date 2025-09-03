@@ -1,8 +1,8 @@
 import { AuthContext } from "@/hooks/useAuth";
 import { auth } from "@/lib/firebaseConfig";
 import { getUser } from "@/services/usersServices";
+import { onAuthStateChanged } from "@react-native-firebase/auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { onAuthStateChanged } from "firebase/auth";
 import React, { type ReactNode, useEffect, useState } from "react";
 interface AuthProviderProps {
   children: ReactNode;

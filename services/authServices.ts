@@ -1,13 +1,11 @@
 import { auth } from "@/lib/firebaseConfig";
-import { FirebaseError } from "firebase/app";
 import {
-  browserPopupRedirectResolver,
   FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   signOut,
-} from "firebase/auth";
+} from "@react-native-firebase/auth";
 
 export const logout = async () => {
   return await signOut(auth);
@@ -22,17 +20,9 @@ export const GoogleSignIn = async () =>
 // });
 
 export const FaceBookSignIn = async () =>
-  await signInWithPopup(
-    auth,
-    new FacebookAuthProvider(),
-    browserPopupRedirectResolver,
-  ).catch(async (err) => {
-    if ((err as FirebaseError).code === "auth/popup-blocked") {
-      return await signInWithRedirect(
-        auth,
-        new FacebookAuthProvider(),
-        browserPopupRedirectResolver,
-      );
+  await signInWithPopup(auth, new FacebookAuthProvider()).catch(async (err) => {
+    if ((err ).code === "auth/popup-blocked") {
+      return await signInWithRedirect(auth, new FacebookAuthProvider());
     }
     throw err;
   });
