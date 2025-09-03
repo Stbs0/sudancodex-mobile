@@ -1,18 +1,14 @@
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { useColorScheme } from "@/components/useColorScheme";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
-
 const queryClient = new QueryClient();
 
 export {
@@ -28,31 +24,33 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "YOUR_WEB_CLIENT_ID",
+      offlineAccess: true,
+    });
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <SafeAreaProvider>
-            <RootLayoutNav />
-          </SafeAreaProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <SafeAreaProvider>
+          <RootLayoutNav />
+        </SafeAreaProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
 function RootLayoutNav() {
   return (
     <>
+      <StatusBar />
       <Stack>
-        <Stack.Protected guard={false}>
-          <Stack.Screen
-            name='(tabs)'
-            options={{ headerShown: false }}
-          />
-        </Stack.Protected>
+        <Stack.Screen
+          name='(tabs)'
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name='modal'
           options={{ presentation: "modal" }}
