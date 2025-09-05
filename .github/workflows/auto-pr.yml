@@ -9,13 +9,15 @@ jobs:
   create-pr:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           branch: auto-pr-${{ github.sha }}
           title: "Auto PR for commit ${{ github.sha }}"
-          body: |
-            This PR was automatically created from a push to main.
+         
           base: main
           labels: automated
           token: ${{ secrets.GITHUB_TOKEN }}
