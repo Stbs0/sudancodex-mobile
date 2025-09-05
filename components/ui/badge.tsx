@@ -2,7 +2,7 @@ import { TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import * as Slot from '@rn-primitives/slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Platform, View, ViewProps } from 'react-native';
+import { Platform, View, type ViewProps } from 'react-native';
 
 const badgeVariants = cva(
   cn(
@@ -24,6 +24,22 @@ const badgeVariants = cva(
         ),
         destructive: cn(
           'bg-destructive border-transparent',
+          Platform.select({ web: '[a&]:hover:bg-destructive/90' })
+        ),
+        genericName: cn(
+          'bg-blue-400 border-transparent',
+          Platform.select({ web: '[a&]:hover:bg-destructive/90' })
+        ),
+        country: cn(
+          'bg-green-400 border-transparent',
+          Platform.select({ web: '[a&]:hover:bg-destructive/90' })
+        ),
+        company: cn(
+          'bg-purple-400 border-transparent',
+          Platform.select({ web: '[a&]:hover:bg-destructive/90' })
+        ),
+        agent: cn(
+          'bg-zinc-400 border-transparent',
           Platform.select({ web: '[a&]:hover:bg-destructive/90' })
         ),
         outline: Platform.select({ web: '[a&]:hover:bg-accent [a&]:hover:text-accent-foreground' }),

@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -15,12 +16,34 @@ function TabBarIcon(props: {
     />
   );
 }
+// const SearchContext = createContext<{
+//   setSearch: React.Dispatch<React.SetStateAction<string>>;
+//   search: string;
+// } | null>(null);
+
+// const SearchProvider = ({
+//   children,
+//   searched,
+// }: {
+//   children: ReactNode;
+//   searched: string;
+// }) => {
+//   const [search, setSearch] = useState(searched);
+
+//   return (
+//     <SearchContext value={{ search, setSearch }}>{children}</SearchContext>
+//   );
+// };
 
 export default function TabLayout() {
+  const { top } = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        // headerShown: false,
+
+        // sceneStyle: { paddingTop: top },
+        // tabBarHideOnKeyboard: true,
       }}>
       <Tabs.Screen
         name='index'
@@ -49,6 +72,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* <Tabs.Screen
+        name='[no]'
+        options={{
+          href: null,
+
+        }}
+      /> */}
     </Tabs>
   );
 }
