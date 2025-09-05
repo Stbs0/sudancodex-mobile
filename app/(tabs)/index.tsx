@@ -20,76 +20,55 @@ export const DrugCard = ({
   agentName,
 }: Drug) => {
   return (
-    <Card className=' '>
-      <CardContent className='gap-2'>
-        <View className='gap-2   '>
-          <View className='flex-row gap-2'>
+    <Card className=" ">
+      <CardContent className="gap-2">
+        <View className="gap-2   ">
+          <View className="flex-row gap-2">
             <Text
               numberOfLines={1}
-              ellipsizeMode='tail'
-              className=' font-bold text-gray-800 shrink  dark:text-blue-200  '>
+              ellipsizeMode="tail"
+              className=" font-bold text-gray-800 shrink  dark:text-blue-200  "
+            >
               {brandName}
             </Text>
-            <Badge
-              variant={"outline"}
-              className='shrink'>
-              <Text
-                numberOfLines={1}
-                ellipsizeMode='tail'>
+            <Badge variant={"outline"} className="shrink">
+              <Text numberOfLines={1} ellipsizeMode="tail">
                 {dosageFormName}
               </Text>
             </Badge>
           </View>
-          <View className='flex-row gap-1 '>
-            <Badge
-              variant={"destructive"}
-              className='shrink'>
-              <Text
-                numberOfLines={2}
-                ellipsizeMode='tail'>
+          <View className="flex-row gap-1 ">
+            <Badge variant={"destructive"} className="shrink">
+              <Text numberOfLines={2} ellipsizeMode="tail">
                 {strength}
               </Text>
             </Badge>
-            <Badge
-              variant={"genericName"}
-              className='shrink'>
-              <Text
-                numberOfLines={2}
-                ellipsizeMode='tail'>
+            <Badge variant={"genericName"} className="shrink">
+              <Text numberOfLines={2} ellipsizeMode="tail">
                 {genericName}
               </Text>
             </Badge>
           </View>
         </View>
 
-        <View className='items-start gap-2 '>
-          <Badge className='shrink'>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode='tail'>
+        <View className="items-start gap-2 ">
+          <Badge className="shrink">
+            <Text numberOfLines={1} ellipsizeMode="tail">
               {packSize}
             </Text>
           </Badge>
           <Badge variant={"country"}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode='tail'>
+            <Text numberOfLines={1} ellipsizeMode="tail">
               {countryOfOrigin}
             </Text>
           </Badge>
-          <Badge
-            variant={"company"}
-            className='shrink'>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode='tail'>
+          <Badge variant={"company"} className="shrink">
+            <Text numberOfLines={1} ellipsizeMode="tail">
               {companyName}
             </Text>
           </Badge>
           <Badge variant={"agent"}>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode='tail'>
+            <Text numberOfLines={1} ellipsizeMode="tail">
               {agentName}
             </Text>
           </Badge>
@@ -102,23 +81,16 @@ export const DrugCard = ({
 const DrugList = () => {
   const router = useRouter();
   return (
-    <View
-      style={{ flex: 1 }}
-      className=' bg-background pt-2'>
-      <KeyboardAvoidingView className='flex-1 '>
+    <View style={{ flex: 1 }} className=" bg-background pt-2">
+      <KeyboardAvoidingView className="flex-1 ">
         <FlatList
           data={drugJson}
-          renderItem={({ item }) => (
-            <DrugCard
-              key={item.no}
-              {...item}
-            />
-          )}
+          renderItem={({ item }) => <DrugCard key={item.no} {...item} />}
           contentContainerStyle={{ gap: 4, paddingHorizontal: 16 }}
         />
         <Input
-          className='border m-2  rounded-md text-black'
-          placeholder='Search Drugs...'
+          className="border m-2  rounded-md text-black"
+          placeholder="Search Drugs..."
         />
       </KeyboardAvoidingView>
     </View>

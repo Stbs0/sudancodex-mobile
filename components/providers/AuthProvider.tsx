@@ -28,42 +28,41 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     setUserLoading(true);
 
-const unsubscribe = onAuthStateChanged(auth, async (fireBaseUser) => {
-  try {
-    if (fireBaseUser) {
-      queryClient.prefetchQuery({
-        queryKey: ["user", fireBaseUser.uid],
-        queryFn: async () => await getUser(fireBaseUser.uid),
-      });
-      console.log(fireBaseUser)
-      setUserId(fireBaseUser.uid);
-    } else {
-      setUserId(undefined);
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setUserLoading(false);
-  }
-});
+    const unsubscribe = onAuthStateChanged(auth, async (fireBaseUser) => {
+      try {
+        if (fireBaseUser) {
+          queryClient.prefetchQuery({
+            queryKey: ["user", fireBaseUser.uid],
+            queryFn: async () => await getUser(fireBaseUser.uid),
+          });
+          console.log(fireBaseUser);
+          setUserId(fireBaseUser.uid);
+        } else {
+          setUserId(undefined);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setUserLoading(false);
+      }
+    });
 
     return unsubscribe;
   }, []);
   useEffect(() => {
-GoogleSignin.signInSilently()
-  .then((userInfo) => {
-    console.log("User is already signed in:", userInfo);
-  })
-  .catch((error) => {
-    console.error("Error signing in silently:", error);
-  });
-
-  }, [])
-
+    GoogleSignin.signInSilently()
+      .then((userInfo) => {
+        console.log("User is already signed in:", userInfo);
+      })
+      .catch((error) => {
+        console.error("Error signing in silently:", error);
+      });
+  }, []);
 
   return (
     <AuthContext
-      value={{ user, userLoading, isLoading, isError, error, refetch }}>
+      value={{ user, userLoading, isLoading, isError, error, refetch }}
+    >
       {children}
     </AuthContext>
   );

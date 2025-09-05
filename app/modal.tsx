@@ -7,24 +7,20 @@ import { GoogleSignIn } from "@/services/authServices";
 
 export default function ModalScreen() {
   return (
-    <View >
-      <Text >Modal</Text>
-      <View
-        
-        lightColor='#eee'
-        darkColor='rgba(255,255,255,0.1)'
-      />
+    <View>
+      <Text>Modal</Text>
+      <View lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Button
         onPress={async () => {
           console.log("hi");
           try {
-
             const result = await GoogleSignIn();
             console.log(result);
           } catch (error) {
             console.log(error);
           }
-        }}>
+        }}
+      >
         <Text>Close</Text>
       </Button>
       {/* Use a light status bar on iOS to account for the black space above the modal */}

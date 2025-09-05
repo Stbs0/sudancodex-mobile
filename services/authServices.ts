@@ -21,7 +21,7 @@ export const GoogleSignIn = async () =>
 
 export const FaceBookSignIn = async () =>
   await signInWithPopup(auth, new FacebookAuthProvider()).catch(async (err) => {
-    if ((err ).code === "auth/popup-blocked") {
+    if (err.code === "auth/popup-blocked") {
       return await signInWithRedirect(auth, new FacebookAuthProvider());
     }
     throw err;

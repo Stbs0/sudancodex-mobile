@@ -6,7 +6,7 @@ import axios from "axios";
 export const getDrugInfo = async (
   genericName: string,
   route: string,
-  refetch: boolean
+  refetch: boolean,
 ) => {
   try {
     const parsedGenericName = parseQuery(genericName);
@@ -15,7 +15,7 @@ export const getDrugInfo = async (
 
     const url = refetch
       ? encodeURI(
-          `${OPENFDA_SEARCH_URL}?search=(spl_product_data_elements:(*${parsedGenericName}*)${routeQuery})`
+          `${OPENFDA_SEARCH_URL}?search=(spl_product_data_elements:(*${parsedGenericName}*)${routeQuery})`,
         )
       : getOpenFdaSearchUrl(parsedGenericName);
 
