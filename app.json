@@ -47,6 +47,16 @@
           },
           "imageWidth": 200
         }
+      ],
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+
+          "android": {
+            "enableFTS": false
+          }
+        }
       ]
     ],
     "experiments": {
