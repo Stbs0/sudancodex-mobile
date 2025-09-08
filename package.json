@@ -12,9 +12,12 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,js,json}": [
+    "*.{js,jsx,ts,tsx}": [
       "expo lint --fix",
-      "prettier --write"
+      "prettier --write ."
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write ."
     ]
   },
   "jest": {
