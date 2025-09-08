@@ -1,5 +1,8 @@
 import { connectAuthEmulator, getAuth } from "@react-native-firebase/auth";
-import { connectFirestoreEmulator, getFirestore } from "@react-native-firebase/firestore";
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+} from "@react-native-firebase/firestore";
 
 // const firebaseConfig = {
 //   apiKey: process.env.EXPO_PUBLIC_APIKEY,

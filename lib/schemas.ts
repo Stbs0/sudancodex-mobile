@@ -23,6 +23,3 @@ export const tellUsMoreSchema = z.object({
   occupation: occupationEnum,
 });
 export type tellUsMoreSchemaType = z.infer<typeof tellUsMoreSchema>;
-
-
-

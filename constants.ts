@@ -1,5 +1,3 @@
-
-
 export const DOSAGE_FORMS = [
   {
     label: "AEROSOL",
@@ -686,8 +684,6 @@ export const PACKAGING_TYPES = [
     label: "VIAL, SINGLE-USE",
   },
 ];
-
-
 
 export const OPENFDA_SEARCH_URL = "https://api.fda.gov/drug/label.json";
 
