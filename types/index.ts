@@ -76,5 +76,5 @@ export type PrivateOutletTypes = {
 // }
 
 export type FetchedDrugInfo = {
-  results: Array<Record<string, string[]>>;
+  results: Record<string, string[]>[];
 };
