@@ -117,11 +117,13 @@ const DrugList = () => {
           if (hasNextPage && !isFetchingNextPage) fetchNextPage();
         }}
       />
-      <Input
-        onChangeText={setSearch}
-        className="border m-2  rounded-md "
-        placeholder="Search Drugs. .."
-      />
+      <View className="m-2">
+        <Input
+          onChangeText={setSearch}
+          className="border   rounded-md "
+          placeholder="Search Drugs. .."
+        />
+      </View>
     </>
   );
 };
