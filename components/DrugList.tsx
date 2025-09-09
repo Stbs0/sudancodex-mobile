@@ -1,13 +1,7 @@
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import type { Drug } from "@/types";
 import React, { memo, useCallback } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  View,
-  type NativeSyntheticEvent,
-  type TextInputChangeEventData,
-} from "react-native";
+import { ActivityIndicator, FlatList, View } from "react-native";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
 import { Input } from "./ui/input";
@@ -91,41 +85,40 @@ const DrugList = () => {
     isFetchingNextPage,
     error,
     isLoading,
+    hasNextPage,
   } = useInfiniteScroll();
 
   const renderItem = useCallback(({ item }: { item: Drug }) => {
     return <DrugCard {...item} />;
   }, []);
 
-  const handleInput = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    setSearch(e.nativeEvent.text);
-  };
-
-  //   if (isLoading) return <Text>Loading</Text>;
-
   if (error) return <Text>error</Text>;
   if (isLoading) return <Text>loading</Text>;
-  console.log(isFetchingNextPage);
   return (
     <>
       <FlatList
         // getItemLayout={getItemLayout}
         data={drugList}
         renderItem={renderItem}
-        keyExtractor={(item) => {
-          // console.log("key", item.no);
-          return item.no;
-        }}
+        keyExtractor={(item) => String(item.no)}
         ListFooterComponent={() => {
-          if (isFetchingNextPage) return <ActivityIndicator size={"large"} />;
-          return <Text className="flex-row justify-center">Nothing</Text>;
+          if (isFetchingNextPage) return <ActivityIndicator size="large" />;
+          if (!hasNextPage && drugList.length > 0)
+            return (
+              <Text className="text-muted-foreground text-center py-2">
+                No more results
+              </Text>
+            );
+          return null;
         }}
         onEndReachedThreshold={0.7}
         contentContainerStyle={{ gap: 4, paddingHorizontal: 16 }}
-        onEndReached={() => fetchNextPage()}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+        }}
       />
       <Input
-        onChange={handleInput}
+        onChangeText={setSearch}
         className="border m-2  rounded-md "
         placeholder="Search Drugs. .."
       />
