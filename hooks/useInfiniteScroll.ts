@@ -1,28 +1,69 @@
 import type { Drug } from "@/types";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSQLiteContext } from "expo-sqlite";
-import { useDeferredValue, useEffect, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
+
+const PAGE_SIZE = 10;
 
 export const useInfiniteScroll = () => {
   const db = useSQLiteContext();
-  const [drugList, setDrugList] = useState<Drug[]>([]);
   const [search, setSearch] = useState("");
-  console.log(search);
   const defferedSearch = useDeferredValue(search);
-  useEffect(() => {
-    db.getAllAsync("SELECT * FROM mytable LIMIT 20;").then((res) =>
-      setDrugList(res as Drug[]),
-    );
 
-    console.log("hi");
-  }, []);
+  const query = useInfiniteQuery({
+    queryKey: ["drugList", defferedSearch],
+    queryFn: async ({ pageParam = 0 }) => {
+      const searchTerm = `%${defferedSearch}%`; // LIKE %term%
 
-  const fetchMore = async () => {
-    const res = await db.getAllAsync(
-      `SELECT * FROM mytable LIMIT 10 OFFSET $value;`,
-      drugList.length,
-    );
+      const drugs = (await db.getAllAsync(
+        `
+        SELECT *
+        FROM mytable
+        WHERE brandName LIKE ?
+           OR genericName LIKE ?
+           OR dosageFormName LIKE ?
+           OR strength LIKE ?
+           OR packSize LIKE ?
+           OR companyName LIKE ?
+           OR countryOfOrigin LIKE ?
+           OR agentName LIKE ?
+        ORDER BY brandName COLLATE NOCASE ASC
+        LIMIT ${PAGE_SIZE} OFFSET ?;
+        `,
+        [
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          searchTerm,
+          pageParam,
+        ],
+      )) as Drug[];
 
-    setDrugList((prev) => [...prev, ...(res as Drug[])]);
+      return {
+        drugs,
+        nextPage:
+          drugs.length === PAGE_SIZE ? pageParam + PAGE_SIZE : undefined,
+      };
+    },
+    initialPageParam: 0,
+    placeholderData: (prev) => prev,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+
+  // Flatten all pages into a single list for convenience
+  const drugList = useMemo(
+    () => query.data?.pages.flatMap((page) => page.drugs) ?? [],
+    [query.data],
+  );
+
+  return {
+    drugList,
+    search,
+    setSearch,
+    ...query, // gives you error, isLoading, fetchNextPage, etc.
   };
-  return { fetchMore, drugList, setSearch };
 };
