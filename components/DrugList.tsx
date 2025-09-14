@@ -1,82 +1,11 @@
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import type { Drug } from "@/types";
-import React, { memo, useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
-import { Badge } from "./ui/badge";
-import { Card, CardContent } from "./ui/card";
+import DrugCard from "./DrugCard";
 import { Input } from "./ui/input";
 import { Text } from "./ui/text";
-const DrugCard = memo(
-  ({
-    brandName,
-    genericName,
-    dosageFormName,
-    strength,
-    packSize,
-    companyName,
-    countryOfOrigin,
-    agentName,
-  }: Drug) => {
-    return (
-      <Card className=" ">
-        <CardContent className="gap-2">
-          <View className="gap-2   ">
-            <View className="flex-row gap-2">
-              <Text
-                numberOfLines={1}
-                ellipsizeMode="tail"
-                className=" font-bold text-gray-800 shrink  dark:text-blue-200  "
-              >
-                {brandName}
-              </Text>
-              <Badge variant={"outline"} className="shrink">
-                <Text numberOfLines={1} ellipsizeMode="tail">
-                  {dosageFormName}
-                </Text>
-              </Badge>
-            </View>
-            <View className="flex-row gap-1 ">
-              <Badge variant={"destructive"} className="shrink">
-                <Text numberOfLines={2} ellipsizeMode="tail">
-                  {strength}
-                </Text>
-              </Badge>
-              <Badge variant={"genericName"} className="shrink">
-                <Text numberOfLines={2} ellipsizeMode="tail">
-                  {genericName}
-                </Text>
-              </Badge>
-            </View>
-          </View>
 
-          <View className="items-start gap-2 ">
-            <Badge className="shrink">
-              <Text numberOfLines={1} ellipsizeMode="tail">
-                {packSize}
-              </Text>
-            </Badge>
-            <Badge variant={"country"}>
-              <Text numberOfLines={1} ellipsizeMode="tail">
-                {countryOfOrigin}
-              </Text>
-            </Badge>
-            <Badge variant={"company"} className="shrink">
-              <Text numberOfLines={1} ellipsizeMode="tail">
-                {companyName}
-              </Text>
-            </Badge>
-            <Badge variant={"agent"}>
-              <Text numberOfLines={1} ellipsizeMode="tail">
-                {agentName}
-              </Text>
-            </Badge>
-          </View>
-        </CardContent>
-      </Card>
-    );
-  },
-);
-DrugCard.displayName = "DrugCard";
 const DrugList = () => {
   const {
     drugList,
@@ -92,15 +21,25 @@ const DrugList = () => {
     return <DrugCard {...item} />;
   }, []);
 
-  if (error) return <Text>error</Text>;
-  if (isLoading) return <Text>loading</Text>;
+  const debouncedSetSearch = useMemo(() => {
+    let t: number | null = null;
+    return (q: string) => {
+      if (t) clearTimeout(t);
+      t = setTimeout(() => setSearch(q), 500);
+    };
+  }, [setSearch]);
+
+  if (error) return <Text className="text-destructive">{String(error)}</Text>;
+  if (isLoading)
+    return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
   return (
     <>
       <FlatList
         // getItemLayout={getItemLayout}
         data={drugList}
         renderItem={renderItem}
-        keyExtractor={(item) => String(item.no)}
+        keyExtractor={(item) => item.no}
+        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
         ListFooterComponent={() => {
           if (isFetchingNextPage) return <ActivityIndicator size="large" />;
           if (!hasNextPage && drugList.length > 0)
@@ -111,16 +50,17 @@ const DrugList = () => {
             );
           return null;
         }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
         onEndReachedThreshold={0.7}
-        contentContainerStyle={{ gap: 4, paddingHorizontal: 16 }}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage) fetchNextPage();
         }}
+        keyboardShouldPersistTaps="always"
       />
       <View className="m-2">
         <Input
-          onChangeText={setSearch}
-          className="border   rounded-md "
+          onChangeText={debouncedSetSearch}
+          className="border rounded-md "
           placeholder="Search Drugs. .."
         />
       </View>
