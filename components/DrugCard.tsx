@@ -19,6 +19,7 @@ const DrugCard = memo(
     agentName,
   }: Drug) => {
     return (
+      // TODO: remove the the extra params pr #10 Avoid passing all fields via route params to keep deep links small and stable.
       <Link
         href={{
           pathname: "/drug-list/[no]",
@@ -37,7 +38,10 @@ const DrugCard = memo(
         asChild
         push
       >
-        <Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${brandName} details`}
+        >
           <Card className=" ">
             <CardContent className="gap-2">
               <View className="gap-2   ">

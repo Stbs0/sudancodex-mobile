@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentPropsWithoutRef<typeof Ionicons>["name"];
 
@@ -10,36 +9,10 @@ function TabBarIcon(props: {
 }) {
   return <Ionicons style={{ marginBottom: -3 }} {...props} />;
 }
-// const SearchContext = createContext<{
-//   setSearch: React.Dispatch<React.SetStateAction<string>>;
-//   search: string;
-// } | null>(null);
-
-// const SearchProvider = ({
-//   children,
-//   searched,
-// }: {
-//   children: ReactNode;
-//   searched: string;
-// }) => {
-//   const [search, setSearch] = useState(searched);
-
-//   return (
-//     <SearchContext value={{ search, setSearch }}>{children}</SearchContext>
-//   );
-// };
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={
-        {
-          // headerShown: false,
-          // sceneStyle: { paddingTop: top },
-          // tabBarHideOnKeyboard: true,
-        }
-      }
-    >
+    <Tabs>
       <Tabs.Screen
         name="drug-list"
         options={{
@@ -57,19 +30,13 @@ export default function TabLayout() {
           tabBarIcon: (props) => <TabBarIcon name="person" {...props} />,
         }}
       />
-      {/* <Tabs.Screen
-        name="drug-list/[no]"
-        options={{
-          href: null,
-          title: "",
-        }}
-      />
+
       <Tabs.Screen
         name="index"
         options={{
           href: null,
         }}
-      /> */}
+      />
     </Tabs>
   );
 }

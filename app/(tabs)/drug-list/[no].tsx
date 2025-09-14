@@ -10,9 +10,14 @@ import { Text } from "@/components/ui/text";
 import { getDrugInfo } from "@/services/drugServices";
 import type { Drug } from "@/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocalSearchParams, useNavigation, usePathname } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ScrollView, useWindowDimensions, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import RenderHtml from "react-native-render-html";
 
 const propToDelete = [
@@ -31,27 +36,24 @@ const DrugInfo = () => {
     refetch: false,
     route: "",
   });
-  const path = usePathname();
-  console.log(path);
-  // console.log(drug);
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({ title: drug.brandName });
-  }, []);
+  }, [navigation, drug.brandName]);
   const { data, isLoading, isError } = useQuery({
     queryKey: ["drugInfo", drug.no],
 
     queryFn: () => {
       return getDrugInfo(
         searchInputs.generic,
-
         searchInputs.route,
         searchInputs.refetch,
       );
     },
     select: (values) => {
-      delete values.openfda;
-      return values;
+      if (!values) return values;
+      const { openfda, ...rest } = values;
+      return rest;
     },
   });
 
@@ -71,7 +73,8 @@ const DrugInfo = () => {
     queryClient.removeQueries({ queryKey: ["drugInfo", drug.no] });
   };
   if (isError) return <Text>error</Text>;
-  if (isLoading) return <Text>Louding</Text>;
+  if (isLoading)
+    return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
   if (!data) return <Text>no data</Text>;
   console.log(data);
   const keys = Object.keys(data)
@@ -129,7 +132,7 @@ const DrugInfo = () => {
       <View className="w-full mt-4">
         <Accordion type="multiple" collapsable>
           {keys.map((key, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionItem key={key} value={key}>
               <AccordionTrigger>
                 <Text>{key.replace(/_/g, " ").toUpperCase()}</Text>
               </AccordionTrigger>
@@ -139,12 +142,12 @@ const DrugInfo = () => {
                   data[key].map((line, i) =>
                     line.startsWith("<") ? (
                       <RenderHtml
-                        key={index}
+                        key={`${key}-${i}`}
                         contentWidth={width}
                         source={{ html: line }}
                       />
                     ) : (
-                      <Text key={i}>{line}</Text>
+                      <Text key={`${key}-${i}`}>{line}</Text>
                     ),
                   )
                 ) : (

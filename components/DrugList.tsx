@@ -1,6 +1,6 @@
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import type { Drug } from "@/types";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
 import DrugCard from "./DrugCard";
 import { Input } from "./ui/input";
@@ -21,15 +21,25 @@ const DrugList = () => {
     return <DrugCard {...item} />;
   }, []);
 
-  if (error) return <Text>error</Text>;
-  if (isLoading) return <Text>loading</Text>;
+  const debouncedSetSearch = useMemo(() => {
+    let t: number | null = null;
+    return (q: string) => {
+      if (t) clearTimeout(t);
+      t = setTimeout(() => setSearch(q), 500);
+    };
+  }, [setSearch]);
+
+  if (error) return <Text className="text-destructive">{String(error)}</Text>;
+  if (isLoading)
+    return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
   return (
     <>
       <FlatList
         // getItemLayout={getItemLayout}
         data={drugList}
         renderItem={renderItem}
-        keyExtractor={(item) => String(item.no)}
+        keyExtractor={(item) => item.no}
+        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
         ListFooterComponent={() => {
           if (isFetchingNextPage) return <ActivityIndicator size="large" />;
           if (!hasNextPage && drugList.length > 0)
@@ -40,16 +50,17 @@ const DrugList = () => {
             );
           return null;
         }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
         onEndReachedThreshold={0.7}
-        contentContainerStyle={{ gap: 4, paddingHorizontal: 16 }}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage) fetchNextPage();
         }}
+        keyboardShouldPersistTaps="always"
       />
       <View className="m-2">
         <Input
-          onChangeText={setSearch}
-          className="border   rounded-md "
+          onChangeText={debouncedSetSearch}
+          className="border rounded-md "
           placeholder="Search Drugs. .."
         />
       </View>

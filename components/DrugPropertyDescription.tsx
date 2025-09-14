@@ -17,8 +17,11 @@ const DrugPropertyDescription = ({
         className,
       )}
     >
-      <Text className="font-medium text-gray-500">{title}</Text>
-      <Text>{property}</Text>
+      {Array.isArray(property) ? (
+        property.map((line, i) => <Text key={i}>{line}</Text>)
+      ) : (
+        <Text>{String(property ?? "")}</Text>
+      )}
     </View>
   );
 };
