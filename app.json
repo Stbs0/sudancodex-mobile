@@ -4,12 +4,12 @@
     "slug": "sudancodex",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/adaptive-icon.png",
+    "icon": "./src/assets/icons/adaptive-icon.png",
     "scheme": "sudancodexmobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "",
+      "image": "./src/assets/icons/icons/spa",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/adaptive-icon.png",
+        "foregroundImage": "./src/assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
@@ -40,9 +40,9 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#232323",
-          "image": "./assets/icons/splash-icon-light.png",
+          "image": "./src/assets/icons/splash-icon-light.png",
           "dark": {
-            "image": "./assets/icons/splash-icon-dark.png",
+            "image": "./src/assets/icons/splash-icon-dark.png",
             "backgroundColor": "#000000"
           },
           "imageWidth": 200

@@ -8,9 +8,9 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noImplicitAny": true,
-
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     }
   },
   "include": [
