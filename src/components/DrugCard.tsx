@@ -1,4 +1,4 @@
-import type { Drug } from "@/s";
+import type { Drug } from "@/types";
 import { Link } from "expo-router";
 import React, { memo } from "react";
 import { Pressable, View } from "react-native";

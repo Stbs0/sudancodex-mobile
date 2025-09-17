@@ -72,11 +72,13 @@ const DrugInfo = () => {
     setSearchInputs(submittedData);
     queryClient.removeQueries({ queryKey: ["drugInfo", drug.no] });
   };
+
   if (isError) return <Text>error</Text>;
   if (isLoading)
     return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
+
   if (!data) return <Text>no data</Text>;
-  console.log(data);
+
   const keys = Object.keys(data)
     .filter((key) => Array.isArray(data[key]) && !propToDelete.includes(key))
     .sort((a, b) => a.localeCompare(b));
@@ -84,10 +86,10 @@ const DrugInfo = () => {
   return (
     <ScrollView
       style={{ flex: 1 }}
-      contentContainerStyle={{ padding: 8 }} // works like className="mx-2"
+      contentContainerStyle={{ padding: 16 }} // works like className="mx-2"
       showsVerticalScrollIndicator={true} // optional
     >
-      <Card className="py-4 w-full px-2">
+      <Card className="py-4 w-full ">
         <CardTitle className="text-center">{drug.brandName}</CardTitle>
         <CardContent className="gap-2 w-full">
           <View className="gap-2">
@@ -129,7 +131,7 @@ const DrugInfo = () => {
         </CardContent>
       </Card>
 
-      <View className="mx-2 mt-4">
+      <View className="mt-4">
         <Accordion type="multiple" collapsable>
           {keys.map((key, index) => (
             <AccordionItem key={key} value={key}>

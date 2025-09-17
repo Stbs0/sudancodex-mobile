@@ -18,7 +18,7 @@ export const getDrugInfo = async (
           `${OPENFDA_SEARCH_URL}?search=(spl_product_data_elements:(*${parsedGenericName}*)${routeQuery})`,
         )
       : getOpenFdaSearchUrl(parsedGenericName);
-    console.log(url);
+    if (__DEV__) console.log("[getDrugInfo] url:", url);
     const { data } = await axios.get<FetchedDrugInfo>(url);
 
     return data.results?.[0];
