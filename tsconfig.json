@@ -19,8 +19,6 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts",
-    "react-native-firebase/packages/auth/lib/index.d.ts",
-    "react-native-firebase/packages/app/lib/index.d.ts",
-    "react-native-firebase/packages/firestore/lib/index.d.ts"
+    "react-native-firebase/**/*.ts"
   ]
 }
