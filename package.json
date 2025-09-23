@@ -11,6 +11,7 @@
     "lint": "expo lint",
     "prepare": "husky"
   },
+  "packageManager": "pnpm@10.15.0",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "expo lint --fix ",
