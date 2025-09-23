@@ -16,7 +16,7 @@ import {
 
 export const auth = getAuth();
 export const db = getFirestore();
-if (__DEV__) {
-  connectAuthEmulator(auth, "http://192.168.1.100:9099");
-  connectFirestoreEmulator(db, "192.168.1.100", 8080);
-}
+// if (__DEV__) {
+//   connectAuthEmulator(auth, "http://192.168.1.100:9099");
+//   connectFirestoreEmulator(db, "192.168.1.100", 8080);
+// }

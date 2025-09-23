@@ -1,19 +1,9 @@
-import { type SaveUserReturnTypes } from "@/types";
-import {
-  type QueryObserverResult,
-  type RefetchOptions,
-} from "@tanstack/react-query";
+import type { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { createContext, useContext } from "react";
 
 interface AuthContextType {
-  user: SaveUserReturnTypes | undefined;
+  user: FirebaseAuthTypes.User | undefined;
   userLoading: boolean;
-  isLoading: boolean;
-  isError: boolean;
-  error: null | Error;
-  refetch: (
-    options?: RefetchOptions,
-  ) => Promise<QueryObserverResult<SaveUserReturnTypes | undefined, Error>>;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
