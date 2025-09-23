@@ -1,7 +1,7 @@
+import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import type { DrugProperty } from "@/types";
 import { View } from "react-native";
-import { Text } from "./ui/text";
 
 type Props = { title: string; property: DrugProperty; className?: string };
 

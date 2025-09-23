@@ -1,10 +1,10 @@
+import { Input } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
 import React, { useCallback, useMemo } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
-import DrugCard from "./DrugCard";
-import { Input } from "./ui/input";
-import { Text } from "./ui/text";
 
 const DrugList = () => {
   const {

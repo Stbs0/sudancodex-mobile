@@ -1,10 +1,10 @@
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Text } from "@/components/ui/text";
 import type { Drug } from "@/types";
 import { Link } from "expo-router";
 import React, { memo } from "react";
 import { Pressable, View } from "react-native";
-import { Badge } from "./ui/badge";
-import { Card, CardContent } from "./ui/card";
-import { Text } from "./ui/text";
 
 const DrugCard = memo(
   ({

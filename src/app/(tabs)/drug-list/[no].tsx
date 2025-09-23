@@ -1,4 +1,3 @@
-import DrugPropertyDescription from "@/components/DrugPropertyDescription";
 import {
   Accordion,
   AccordionContent,
@@ -7,6 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import DrugPropertyDescription from "@/screens/Drug-list/DrugCard/DrugPropertyDescription";
 import { getDrugInfo } from "@/services/drugServices";
 import type { Drug } from "@/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

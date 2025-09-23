@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/components/providers/AuthProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -37,7 +37,7 @@ export default function RootLayout() {
       <SQLite.SQLiteProvider
         databaseName="drugData.db"
         assetSource={{
-          assetId: require("../assets/data/drugData.db"),
+          assetId: require("../assets/data/mergedDrug.db"),
           forceOverwrite: true,
         }}
       >
