@@ -17,6 +17,7 @@ const DrugCard = memo(
     companyName,
     countryOfOrigin,
     agentName,
+    drugInfoRef,
   }: Drug) => {
     return (
       // TODO: remove the the extra params pr #10 Avoid passing all fields via route params to keep deep links small and stable.
@@ -33,6 +34,7 @@ const DrugCard = memo(
             companyName,
             countryOfOrigin,
             agentName,
+            drugInfoRef,
           },
         }}
         asChild

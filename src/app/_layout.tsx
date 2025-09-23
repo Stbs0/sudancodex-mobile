@@ -34,12 +34,7 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SQLite.SQLiteProvider
-        databaseName="drugData.db"
-        assetSource={{
-          assetId: require("../assets/data/mergedDrug.db"),
-        }}
-      >
+      <SQLite.SQLiteProvider databaseName="mergedDrug.db">
         <AuthProvider>
           <ThemeProvider
             value={scheme === "dark" ? NAV_THEME.dark : NAV_THEME.light}
