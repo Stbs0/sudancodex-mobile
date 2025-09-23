@@ -1,4 +1,4 @@
-import DrugList from "@/components/DrugList";
+import DrugList from "@/screens/Drug-list/DrugList";
 import React from "react";
 import { KeyboardAvoidingView, View } from "react-native";
 
