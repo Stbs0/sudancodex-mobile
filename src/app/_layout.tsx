@@ -1,11 +1,11 @@
-import { AuthProvider } from "@/providers/AuthProvider";
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
+import { AuthProvider } from "@/providers/AuthProvider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SplashScreen, Stack, usePathname } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import * as SQLite from "expo-sqlite";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
@@ -38,7 +38,6 @@ export default function RootLayout() {
         databaseName="drugData.db"
         assetSource={{
           assetId: require("../assets/data/mergedDrug.db"),
-          forceOverwrite: true,
         }}
       >
         <AuthProvider>
