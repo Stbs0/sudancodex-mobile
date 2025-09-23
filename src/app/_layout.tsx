@@ -37,7 +37,7 @@ export default function RootLayout() {
       <SQLite.SQLiteProvider
         databaseName="drugData.db"
         assetSource={{
-          assetId: require("../assets//data/drugData.db"),
+          assetId: require("../assets/data/drugData.db"),
           forceOverwrite: true,
         }}
       >
@@ -57,7 +57,6 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const { user, userLoading } = useAuth();
-  const path = usePathname();
   useEffect(() => {
     if (userLoading) {
       return;
@@ -68,7 +67,7 @@ function RootLayoutNav() {
     // }
   }, [userLoading]);
   if (userLoading) {
-    return;
+    return null;
   }
   return (
     <>

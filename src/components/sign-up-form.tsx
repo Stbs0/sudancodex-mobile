@@ -46,7 +46,7 @@ export function SignUpForm() {
         console.log("else");
       }
     } catch (error) {
-      console.error("ssss", error);
+      console.error("error sign up with google", error);
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
@@ -57,6 +57,9 @@ export function SignUpForm() {
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
             // Android only, play services not available or outdated
             break;
+          case statusCodes.SIGN_IN_CANCELLED:
+            // user cancelled the flow
+            return;
           default:
           // some other error happened
         }
