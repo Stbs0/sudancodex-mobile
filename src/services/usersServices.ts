@@ -1,10 +1,17 @@
 // import api from "@/lib/api";
 
-import { auth, db } from "@/lib/firebaseConfig";
 import type { tellUsMoreSchemaType } from "@/lib/schemas";
 import type { SaveUserReturnTypes } from "@/types";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-
+import { getAuth } from "@react-native-firebase/auth";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+  updateDoc,
+} from "@react-native-firebase/firestore";
+const db = getFirestore();
+const auth = getAuth();
 const docRef = (uid: string) => doc(db, "users", uid);
 type UserData = {
   displayName: string | null;
@@ -15,7 +22,7 @@ type UserData = {
   profileComplete: boolean;
 };
 export const SaveUserInFIreStore = async (userData: UserData, uid: string) => {
-  const userRef = doc(db, "users", uid); // 🔥 Fix: Ensure Firestore is used correctly
+  const userRef = docRef(uid);
 
   await setDoc(userRef, {
     uid,
@@ -30,7 +37,9 @@ export const SaveUserInFIreStore = async (userData: UserData, uid: string) => {
 
 export const getUser = async (uid: string) => {
   const userRef = docRef(uid);
-
+  if (!userRef) {
+    return undefined;
+  }
   const docSnap = await getDoc(userRef);
   if (!docSnap.exists()) {
     return undefined;
