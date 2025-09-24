@@ -27,7 +27,7 @@ export const useInfiniteScroll = () => {
            OR companyName LIKE ?
            OR countryOfOrigin LIKE ?
            OR agentName LIKE ?
-        ORDER BY genericName COLLATE NOCASE ASC
+        ORDER BY genericName COLLATE NOCASE ASC, brandName COLLATE NOCASE ASC
         LIMIT ${PAGE_SIZE} OFFSET ?;
         `,
         [

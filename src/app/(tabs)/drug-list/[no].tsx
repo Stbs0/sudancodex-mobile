@@ -97,9 +97,9 @@ const DrugInfo = () => {
           </View>
         </CardContent>
       </Card>
-
+      {}
       <View className="mt-4">
-        <Accordion type="multiple" collapsable>
+        <Accordion type="multiple" collapsible>
           <DrugAccordion
             colorSchema={color}
             width={width}
@@ -193,6 +193,7 @@ const DrugAccordion = ({
   width: number;
   colorSchema: ColorSchemeName;
 }) => {
+  const html = typeof content === "string" ? content : "";
   return (
     <AccordionItem key={trigger} value={trigger}>
       <AccordionTrigger>
@@ -203,7 +204,7 @@ const DrugAccordion = ({
           tagsStyles={tagsStyles}
           enableExperimentalBRCollapsing={true}
           contentWidth={width}
-          source={{ html: content }}
+          source={{ html }}
           // defaultTextProps={{
           //   style: { color: "white" },
           // }}
