@@ -44,11 +44,6 @@ const DrugInfo = () => {
     },
   });
 
-  if (isError) return <Text>error</Text>;
-  if (isLoading)
-    return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
-
-  if (!data) return <Text>no data</Text>;
   // console.log(data);
   return (
     <ScrollView
@@ -97,77 +92,90 @@ const DrugInfo = () => {
           </View>
         </CardContent>
       </Card>
-      {}
-      <View className="mt-4">
-        <Accordion type="multiple" collapsible>
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Title"
-            content={data.title}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Clinical"
-            content={data.clinical}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Indications"
-            content={data.ind}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Adult"
-            content={data.adult}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Ped"
-            content={data.ped}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Side Effects"
-            content={data.side}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Pregnancy"
-            content={data.prgnancy}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Interminor"
-            content={data.interminor}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Contraindications"
-            content={data.contra}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Classification"
-            content={data.clas}
-          />
-          <DrugAccordion
-            colorSchema={color}
-            width={width}
-            trigger="Mode"
-            content={data.mode}
-          />
-        </Accordion>
-      </View>
+      {isError ? (
+        <Text className="text-red-500">Error loading data</Text>
+      ) : isLoading ? (
+        <ActivityIndicator size="large" style={{ marginTop: 16 }} />
+      ) : data ? (
+        <View className="mt-4">
+          <Accordion type="multiple" collapsible>
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Title"
+              content={data.title}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Clinical"
+              content={data.clinical}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Indications"
+              content={data.ind}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Adult"
+              content={data.adult}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Administration"
+              content={data.admin}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Ped"
+              content={data.ped}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Side Effects"
+              content={data.side}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Pregnancy"
+              content={data.prgnancy}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Interminor"
+              content={data.interminor}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Contraindications"
+              content={data.contra}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Classification"
+              content={data.clas}
+            />
+            <DrugAccordion
+              colorSchema={color}
+              width={width}
+              trigger="Mode"
+              content={data.mode}
+            />
+          </Accordion>
+        </View>
+      ) : (
+        <Text>No data available</Text>
+      )}
     </ScrollView>
   );
 };
