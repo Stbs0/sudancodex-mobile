@@ -90,10 +90,13 @@ function RootLayoutNav() {
     <>
       <StatusBar />
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Protected guard={!!user}>
+        <Stack.Protected guard={user?.profileComplete === true}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
-        <Stack.Protected guard={!user}>
+        <Stack.Protected guard={user?.profileComplete === false}>
+          <Stack.Screen name="complete-profile" />
+        </Stack.Protected>
+        <Stack.Protected guard={user === undefined}>
           <Stack.Screen name="auth" />
         </Stack.Protected>
       </Stack>
