@@ -1,6 +1,11 @@
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { connectAuthEmulator, getAuth } from "@react-native-firebase/auth";
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+} from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
@@ -27,8 +32,14 @@ onlineManager.setEventListener((setOnline) => {
   });
   return eventSubscription.remove;
 });
-// const db = SQLite.openDatabaseSync("drugData.db");
-// console.log(db.getAllSync("SELECT name FROM sqlite_master WHERE type='table'"));
+export const auth = getAuth();
+export const db = getFirestore();
+console.log("first", __DEV__);
+if (__DEV__) {
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+}
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
