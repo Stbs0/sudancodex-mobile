@@ -1,63 +1,59 @@
 import { AuthContext } from "@/hooks/useAuth";
+import { getUser } from "@/services/usersServices";
 import {
   type FirebaseAuthTypes,
   getAuth,
   onAuthStateChanged,
 } from "@react-native-firebase/auth";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { type ReactNode, useEffect, useState } from "react";
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [userLoading, setUserLoading] = useState(true);
-  const [user, setUser] = useState<undefined | FirebaseAuthTypes.User>(
-    undefined,
-  );
+  const [authLoading, setAuthLoading] = useState(true);
+  const [userAuth, setUserAuth] = useState<null | FirebaseAuthTypes.User>(null);
+  const queryClient = useQueryClient();
 
-  // TODO: the problem of user doesnt have profile in firestore!! add a comlete profile step
-
-  // const {
-  //   isLoading,
-  //   isError,
-  //   data: user,
-  //   error,
-  //   refetch,
-  // } = useQuery({
-  //   queryKey: ["user", userId],
-  //   queryFn: async () => await getUser(userId!),
-
-  //   enabled: !!userId,
-  // });
+  const {
+    isLoading,
+    isError,
+    data: user,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["user", userAuth?.uid],
+    queryFn: async () => await getUser(userAuth?.uid!),
+    staleTime: 5 * 60 * 1000,
+    enabled: !!userAuth?.uid,
+  });
   useEffect(() => {
-    setUserLoading(true);
+    setAuthLoading(true);
 
     const unsubscribe = onAuthStateChanged(getAuth(), async (fireBaseUser) => {
       if (fireBaseUser) {
-        // TODO: the problem of user doesnt have profile in firestore!! add a comlete profile step
-        // queryClient.prefetchQuery({
-        //   queryKey: ["user", fireBaseUser.uid],
-        //   queryFn: async () => await getUser(fireBaseUser.uid),
-        // });
-        setUser(fireBaseUser);
+        queryClient.prefetchQuery({
+          queryKey: ["user", fireBaseUser.uid],
+          queryFn: async () => await getUser(fireBaseUser.uid),
+        });
+        setUserAuth(fireBaseUser);
       } else {
-        setUser(undefined);
+        queryClient.removeQueries({ queryKey: ["user"] });
+
+        setUserAuth(null);
       }
 
-      setUserLoading(false);
+      setAuthLoading(false);
     });
 
     return unsubscribe;
-  }, []);
-  // useEffect(() => {
-  //   GoogleSignin.signInSilently()
-  //     .then((userInfo) => {
-  //       console.log("User is already signed in:", userInfo);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error signing in silently:", error);
-  //     });
-  // }, []);
+  }, [queryClient]);
+  const userLoading = isLoading || authLoading;
 
-  return <AuthContext value={{ user, userLoading }}>{children}</AuthContext>;
+  return (
+    <AuthContext value={{ user, userLoading, isError, error, refetch }}>
+      {children}
+    </AuthContext>
+  );
 };
