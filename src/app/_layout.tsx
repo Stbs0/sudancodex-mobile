@@ -4,7 +4,12 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  onlineManager,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import * as Network from "expo-network";
 import { SplashScreen, Stack } from "expo-router";
 import * as SQLite from "expo-sqlite";
 import { StatusBar } from "expo-status-bar";
@@ -15,6 +20,13 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 
 const queryClient = new QueryClient();
+
+onlineManager.setEventListener((setOnline) => {
+  const eventSubscription = Network.addNetworkStateListener((state) => {
+    setOnline(!!state.isConnected);
+  });
+  return eventSubscription.remove;
+});
 // const db = SQLite.openDatabaseSync("drugData.db");
 // console.log(db.getAllSync("SELECT name FROM sqlite_master WHERE type='table'"));
 export {
