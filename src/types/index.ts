@@ -42,6 +42,23 @@ export type Drug = {
   companyName: string;
   countryOfOrigin: string;
   agentName: string;
+  drugInfoRef: string | null;
+};
+export type DrugInfoTypes = {
+  title: string;
+  drug_id: string;
+  ind: string;
+  adult: string;
+  ped: string;
+  side: string;
+  prgnancy: string;
+  intermajer: string;
+  clinical: string;
+  admin: string;
+  interminor: string;
+  contra: string;
+  clas: string;
+  mode: string;
 };
 export type DrugProperty = Drug[keyof Drug];
 

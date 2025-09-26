@@ -11,6 +11,7 @@
     "lint": "expo lint",
     "prepare": "husky"
   },
+  "packageManager": "pnpm@10.17.1",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "expo lint --fix ",
@@ -61,10 +62,12 @@
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.5",
     "expo": "~53.0.22",
+    "expo-asset": "~11.1.7",
     "expo-constants": "~17.1.7",
     "expo-dev-client": "~5.2.4",
     "expo-font": "~13.3.2",
     "expo-linking": "~7.1.7",
+    "expo-network": "~7.1.5",
     "expo-router": "~5.1.5",
     "expo-splash-screen": "~0.30.10",
     "expo-sqlite": "~15.2.14",
@@ -72,7 +75,7 @@
     "expo-system-ui": "~5.0.11",
     "expo-web-browser": "~14.2.0",
     "lucide-react-native": "^0.542.0",
-    "nativewind": "^4.1.23",
+    "nativewind": "4.1.21",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.6",
@@ -80,6 +83,7 @@
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
+    "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",

@@ -18,7 +18,7 @@ export const useInfiniteScroll = () => {
       const drugs = (await db.getAllAsync(
         `
         SELECT *
-        FROM mytable
+        FROM drugIndex
         WHERE brandName LIKE ?
            OR genericName LIKE ?
            OR dosageFormName LIKE ?
@@ -27,7 +27,7 @@ export const useInfiniteScroll = () => {
            OR companyName LIKE ?
            OR countryOfOrigin LIKE ?
            OR agentName LIKE ?
-        ORDER BY brandName COLLATE NOCASE ASC
+        ORDER BY genericName COLLATE NOCASE ASC, brandName COLLATE NOCASE ASC
         LIMIT ${PAGE_SIZE} OFFSET ?;
         `,
         [
