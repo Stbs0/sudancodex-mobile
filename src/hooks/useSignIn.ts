@@ -20,7 +20,9 @@ const useSignIn = () => {
   const signIn = async () => {
     setLoading(true);
     try {
-      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
       const response = await GoogleSignin.signIn();
 
       if (isSuccessResponse(response)) {

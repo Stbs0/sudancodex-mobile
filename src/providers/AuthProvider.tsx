@@ -7,6 +7,7 @@ import {
 } from "@react-native-firebase/auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { type ReactNode, useEffect, useMemo, useState } from "react";
+import { Alert } from "react-native";
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -46,11 +47,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         } catch (error) {
           console.error("Failed to prefetch user data:", error);
           // Handle the error appropriately, maybe set an error state
+          queryClient.setQueryData(["user", fireBaseUser.uid], undefined);
+          Alert.alert("Error", "Failed to prefetch user data.");
         }
         setUserAuth(fireBaseUser);
       } else {
-        queryClient.removeQueries({ queryKey: ["user"] });
-
+        queryClient.removeQueries({
+          queryKey: ["user", userAuth?.uid],
+          exact: true,
+        });
         setUserAuth(null);
       }
 

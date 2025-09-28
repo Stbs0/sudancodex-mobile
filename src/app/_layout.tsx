@@ -40,7 +40,11 @@ export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
-
+if (__DEV__ && !process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID) {
+  console.warn(
+    "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is not set. Google Sign-In may fail.",
+  );
+}
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || "",
 });
@@ -77,6 +81,9 @@ function RootLayoutNav() {
     // if (isError) {
     //   console.error(error);
     // }
+
+    // Debounce combined loading state to prevent UI flicker
+    // see: https://github.com/Stbs0/sudancodex-mobile/pull/15
   }, [userLoading]);
   if (userLoading) {
     return null;
