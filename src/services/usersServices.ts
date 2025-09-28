@@ -1,7 +1,10 @@
 // import api from "@/lib/api";
 
 import type { tellUsMoreSchemaType } from "@/lib/schemas";
-import type { SaveUserReturnTypes } from "@/types";
+import type {
+  SaveUserReturnTypes,
+  UserDataToSaveToFirebaseTypes,
+} from "@/types";
 import { getAuth } from "@react-native-firebase/auth";
 import {
   doc,
@@ -13,15 +16,11 @@ import {
 const db = getFirestore();
 const auth = getAuth();
 const docRef = (uid: string) => doc(db, "users", uid);
-type UserData = {
-  displayName: string | null;
-  email: string | null;
-  photoURL: string | null;
-  phoneNumber: string | null;
-  providerId: string;
-  profileComplete: boolean;
-};
-export const SaveUserInFIreStore = async (userData: UserData, uid: string) => {
+
+export const SaveUserInFireStore = async (
+  userData: UserDataToSaveToFirebaseTypes,
+  uid: string,
+) => {
   const userRef = docRef(uid);
 
   await setDoc(userRef, {
@@ -37,12 +36,10 @@ export const SaveUserInFIreStore = async (userData: UserData, uid: string) => {
 
 export const getUser = async (uid: string) => {
   const userRef = docRef(uid);
-  if (!userRef) {
-    return undefined;
-  }
+
   const docSnap = await getDoc(userRef);
   if (!docSnap.exists()) {
-    return undefined;
+    throw new Error("Firestore User not found");
   }
 
   return docSnap.data() as SaveUserReturnTypes;

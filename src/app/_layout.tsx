@@ -1,6 +1,10 @@
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { AuthProvider } from "@/providers/AuthProvider";
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+} from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { ThemeProvider } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
@@ -27,16 +31,22 @@ onlineManager.setEventListener((setOnline) => {
   });
   return eventSubscription.remove;
 });
-// const db = SQLite.openDatabaseSync("drugData.db");
-// console.log(db.getAllSync("SELECT name FROM sqlite_master WHERE type='table'"));
+const db = getFirestore();
+if (__DEV__) {
+  connectFirestoreEmulator(db, "192.168.1.100", 8080);
+}
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
-
+if (__DEV__ && !process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID) {
+  console.warn(
+    "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is not set. Google Sign-In may fail.",
+  );
+}
 GoogleSignin.configure({
-  webClientId:
-    "123556291346-646g4vti7nnir7v8dmvtshtla9ujtutq.apps.googleusercontent.com",
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || "",
 });
 
 SplashScreen.preventAutoHideAsync();
@@ -71,6 +81,9 @@ function RootLayoutNav() {
     // if (isError) {
     //   console.error(error);
     // }
+
+    // Debounce combined loading state to prevent UI flicker
+    // see: https://github.com/Stbs0/sudancodex-mobile/pull/15
   }, [userLoading]);
   if (userLoading) {
     return null;
@@ -79,10 +92,13 @@ function RootLayoutNav() {
     <>
       <StatusBar />
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Protected guard={!!user}>
+        <Stack.Protected guard={user?.profileComplete === true}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
-        <Stack.Protected guard={!user}>
+        <Stack.Protected guard={user?.profileComplete === false}>
+          <Stack.Screen name="complete-profile" />
+        </Stack.Protected>
+        <Stack.Protected guard={user === undefined}>
           <Stack.Screen name="auth" />
         </Stack.Protected>
       </Stack>

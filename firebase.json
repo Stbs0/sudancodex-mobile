@@ -1,9 +1,5 @@
 {
   "emulators": {
-    "auth": {
-      "port": 9099,
-      "host": "192.168.1.100"
-    },
     "firestore": {
       "port": 8080,
       "host": "192.168.1.100"

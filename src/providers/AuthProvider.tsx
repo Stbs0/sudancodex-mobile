@@ -1,63 +1,77 @@
 import { AuthContext } from "@/hooks/useAuth";
+import { getUser } from "@/services/usersServices";
 import {
   type FirebaseAuthTypes,
   getAuth,
   onAuthStateChanged,
 } from "@react-native-firebase/auth";
-import React, { type ReactNode, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React, { type ReactNode, useEffect, useMemo, useState } from "react";
+import { Alert } from "react-native";
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [userLoading, setUserLoading] = useState(true);
-  const [user, setUser] = useState<undefined | FirebaseAuthTypes.User>(
-    undefined,
-  );
+  const [authLoading, setAuthLoading] = useState(true);
+  const [userAuth, setUserAuth] = useState<null | FirebaseAuthTypes.User>(null);
+  const queryClient = useQueryClient();
 
-  // TODO: the problem of user doesnt have profile in firestore!! add a comlete profile step
-
-  // const {
-  //   isLoading,
-  //   isError,
-  //   data: user,
-  //   error,
-  //   refetch,
-  // } = useQuery({
-  //   queryKey: ["user", userId],
-  //   queryFn: async () => await getUser(userId!),
-
-  //   enabled: !!userId,
-  // });
+  const {
+    isLoading,
+    isError,
+    data: user,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["user", userAuth?.uid],
+    queryFn: async () => {
+      if (!userAuth?.uid) {
+        throw new Error("No user ID available");
+      }
+      return await getUser(userAuth.uid);
+    },
+    staleTime: 5 * 60 * 1000,
+    enabled: !!userAuth?.uid,
+  });
   useEffect(() => {
-    setUserLoading(true);
+    setAuthLoading(true);
 
     const unsubscribe = onAuthStateChanged(getAuth(), async (fireBaseUser) => {
       if (fireBaseUser) {
-        // TODO: the problem of user doesnt have profile in firestore!! add a comlete profile step
-        // queryClient.prefetchQuery({
-        //   queryKey: ["user", fireBaseUser.uid],
-        //   queryFn: async () => await getUser(fireBaseUser.uid),
-        // });
-        setUser(fireBaseUser);
+        try {
+          await queryClient.prefetchQuery({
+            queryKey: ["user", fireBaseUser.uid],
+            queryFn: async () => await getUser(fireBaseUser.uid),
+          });
+        } catch (error) {
+          console.error("Failed to prefetch user data:", error);
+          // Handle the error appropriately, maybe set an error state
+          queryClient.setQueryData(["user", fireBaseUser.uid], undefined);
+          Alert.alert("Error", "Failed to prefetch user data.");
+        }
+        setUserAuth(fireBaseUser);
       } else {
-        setUser(undefined);
+        queryClient.removeQueries({
+          queryKey: ["user", userAuth?.uid],
+          exact: true,
+        });
+        setUserAuth(null);
       }
 
-      setUserLoading(false);
+      setAuthLoading(false);
     });
 
     return unsubscribe;
-  }, []);
-  // useEffect(() => {
-  //   GoogleSignin.signInSilently()
-  //     .then((userInfo) => {
-  //       console.log("User is already signed in:", userInfo);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error signing in silently:", error);
-  //     });
-  // }, []);
+  }, [queryClient]);
+  const userLoading = useMemo(
+    () => isLoading || authLoading,
+    [isLoading, authLoading],
+  );
 
-  return <AuthContext value={{ user, userLoading }}>{children}</AuthContext>;
+  return (
+    <AuthContext value={{ user, userLoading, isError, error, refetch }}>
+      {children}
+    </AuthContext>
+  );
 };
