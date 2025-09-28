@@ -44,7 +44,7 @@ export type Drug = {
   agentName: string;
   drugInfoRef: string | null;
 };
-export type UserDataToSaveToFireBaseTypes = {
+export type UserDataToSaveToFirebaseTypes = {
   displayName: string | null;
   email: string | null;
   photoURL: string | null;

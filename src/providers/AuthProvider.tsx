@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
 } from "@react-native-firebase/auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { type ReactNode, useEffect, useState } from "react";
+import React, { type ReactNode, useEffect, useMemo, useState } from "react";
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -24,7 +24,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     refetch,
   } = useQuery({
     queryKey: ["user", userAuth?.uid],
-    queryFn: async () => await getUser(userAuth?.uid!),
+    queryFn: async () => {
+      if (!userAuth?.uid) {
+        throw new Error("No user ID available");
+      }
+      return await getUser(userAuth.uid);
+    },
     staleTime: 5 * 60 * 1000,
     enabled: !!userAuth?.uid,
   });
@@ -33,10 +38,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const unsubscribe = onAuthStateChanged(getAuth(), async (fireBaseUser) => {
       if (fireBaseUser) {
-        queryClient.prefetchQuery({
-          queryKey: ["user", fireBaseUser.uid],
-          queryFn: async () => await getUser(fireBaseUser.uid),
-        });
+        try {
+          await queryClient.prefetchQuery({
+            queryKey: ["user", fireBaseUser.uid],
+            queryFn: async () => await getUser(fireBaseUser.uid),
+          });
+        } catch (error) {
+          console.error("Failed to prefetch user data:", error);
+          // Handle the error appropriately, maybe set an error state
+        }
         setUserAuth(fireBaseUser);
       } else {
         queryClient.removeQueries({ queryKey: ["user"] });
@@ -49,7 +59,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     return unsubscribe;
   }, [queryClient]);
-  const userLoading = isLoading || authLoading;
+  const userLoading = useMemo(
+    () => isLoading || authLoading,
+    [isLoading, authLoading],
+  );
 
   return (
     <AuthContext value={{ user, userLoading, isError, error, refetch }}>

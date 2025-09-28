@@ -1,7 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { AuthProvider } from "@/providers/AuthProvider";
-import { connectAuthEmulator, getAuth } from "@react-native-firebase/auth";
 import {
   connectFirestoreEmulator,
   getFirestore,
@@ -32,12 +31,9 @@ onlineManager.setEventListener((setOnline) => {
   });
   return eventSubscription.remove;
 });
-export const auth = getAuth();
-export const db = getFirestore();
-console.log("first", __DEV__);
+const db = getFirestore();
 if (__DEV__) {
-  connectAuthEmulator(auth, "http://localhost:9099");
-  connectFirestoreEmulator(db, "localhost", 8080);
+  connectFirestoreEmulator(db, "192.168.1.100", 8080);
 }
 
 export {
@@ -46,8 +42,7 @@ export {
 } from "expo-router";
 
 GoogleSignin.configure({
-  webClientId:
-    "123556291346-646g4vti7nnir7v8dmvtshtla9ujtutq.apps.googleusercontent.com",
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || "",
 });
 
 SplashScreen.preventAutoHideAsync();

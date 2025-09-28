@@ -1,8 +1,8 @@
-import { auth } from "@/app/_layout";
-import { SaveUserInFIreStore } from "@/services/usersServices";
-import type { UserDataToSaveToFireBaseTypes } from "@/types";
+import { SaveUserInFireStore } from "@/services/usersServices";
+import type { UserDataToSaveToFirebaseTypes } from "@/types";
 import {
   getAdditionalUserInfo,
+  getAuth,
   GoogleAuthProvider,
   signInWithCredential,
 } from "@react-native-firebase/auth";
@@ -31,11 +31,13 @@ const useSignIn = () => {
 
         const googleCredential = GoogleAuthProvider.credential(idToken);
 
-        const UserCred = await signInWithCredential(auth, googleCredential);
+        const UserCred = await signInWithCredential(
+          getAuth(),
+          googleCredential,
+        );
         const additionalInfo = getAdditionalUserInfo(UserCred);
         if (additionalInfo?.isNewUser) {
-          console.log("new user");
-          const user: UserDataToSaveToFireBaseTypes = {
+          const user: UserDataToSaveToFirebaseTypes = {
             displayName: UserCred.user.displayName,
             email: UserCred.user.email,
             photoURL: UserCred.user.photoURL,
@@ -43,14 +45,14 @@ const useSignIn = () => {
             providerId: UserCred.user.providerId,
             profileComplete: false,
           };
-          await SaveUserInFIreStore(user, UserCred.user.uid);
+          await SaveUserInFireStore(user, UserCred.user.uid);
         }
       } else {
         // sign in was cancelled by user
         console.log("else");
       }
     } catch (error) {
-      console.error("error sign up with google", error);
+      console.error("Error signing in with Google", error);
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:

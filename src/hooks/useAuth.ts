@@ -1,11 +1,12 @@
 import type { SaveUserReturnTypes } from "@/types";
+import type { QueryObserverResult } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
 
 interface AuthContextType {
   user: SaveUserReturnTypes | undefined;
   isError: boolean;
   error: unknown;
-  refetch?: () => void;
+  refetch?: () => Promise<QueryObserverResult<SaveUserReturnTypes, Error>>;
 
   userLoading: boolean;
 }

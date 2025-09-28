@@ -3,7 +3,7 @@
 import type { tellUsMoreSchemaType } from "@/lib/schemas";
 import type {
   SaveUserReturnTypes,
-  UserDataToSaveToFireBaseTypes,
+  UserDataToSaveToFirebaseTypes,
 } from "@/types";
 import { getAuth } from "@react-native-firebase/auth";
 import {
@@ -17,8 +17,8 @@ const db = getFirestore();
 const auth = getAuth();
 const docRef = (uid: string) => doc(db, "users", uid);
 
-export const SaveUserInFIreStore = async (
-  userData: UserDataToSaveToFireBaseTypes,
+export const SaveUserInFireStore = async (
+  userData: UserDataToSaveToFirebaseTypes,
   uid: string,
 ) => {
   const userRef = docRef(uid);
