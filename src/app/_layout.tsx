@@ -24,6 +24,8 @@ import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 
+SplashScreen.preventAutoHideAsync();
+
 const queryClient = new QueryClient();
 
 onlineManager.setEventListener((setOnline) => {
@@ -32,25 +34,23 @@ onlineManager.setEventListener((setOnline) => {
   });
   return eventSubscription.remove;
 });
+
 if (__DEV__) {
   connectAuthEmulator(getAuth(), "http://192.168.1.100:9099");
   connectFirestoreEmulator(getFirestore(), "192.168.1.100", 8080);
 }
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
+export { ErrorBoundary } from "expo-router";
+
 if (__DEV__ && !process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID) {
   console.warn(
     "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is not set. Google Sign-In may fail.",
   );
 }
+
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || "",
 });
-
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const scheme = useColorScheme();
@@ -74,21 +74,21 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const { user, userLoading } = useAuth();
+
   useEffect(() => {
     if (userLoading) {
       return;
     }
     SplashScreen.hideAsync();
-    // if (isError) {
-    //   console.error(error);
-    // }
 
     // Debounce combined loading state to prevent UI flicker
     // see: https://github.com/Stbs0/sudancodex-mobile/pull/15
   }, [userLoading]);
+
   if (userLoading) {
     return null;
   }
+
   return (
     <>
       <StatusBar />
