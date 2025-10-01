@@ -1,6 +1,7 @@
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { connectAuthEmulator, getAuth } from "@react-native-firebase/auth";
 import {
   connectFirestoreEmulator,
   getFirestore,
@@ -31,9 +32,9 @@ onlineManager.setEventListener((setOnline) => {
   });
   return eventSubscription.remove;
 });
-const db = getFirestore();
 if (__DEV__) {
-  connectFirestoreEmulator(db, "192.168.1.100", 8080);
+  connectAuthEmulator(getAuth(), "http://192.168.1.100:9099");
+  connectFirestoreEmulator(getFirestore(), "192.168.1.100", 8080);
 }
 
 export {
