@@ -58,10 +58,12 @@ export default {
           },
         },
       ],
+      "expo-font",
+      "expo-web-browser",
       [
         "expo-asset",
         {
-          assets: ["./src/assets/data/mergedDrug.db"],
+          assetPatterns: ["src/assets/**/*"],
         },
       ],
     ],

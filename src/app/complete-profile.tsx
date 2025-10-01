@@ -18,11 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
-import {
-  occupationEnum,
-  tellUsMoreSchema,
-  type tellUsMoreSchemaType,
-} from "@/lib/schemas";
+import { tellUsMoreSchema, type tellUsMoreSchemaType } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { completeProfile } from "@/services/usersServices";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -204,8 +200,10 @@ const CompleteProfileScreen = () => {
     </View>
   );
 };
-const Occupation = occupationEnum.options.map((value) => ({
-  label: value,
-  value: value,
-}));
+const Occupation = [
+  { label: "Student", value: "Student" },
+  { label: "Administrator", value: "Administrator" },
+  { label: "Pharmacist", value: "Pharmacist" },
+  { label: "Other", value: "Other" },
+];
 export default CompleteProfileScreen;
