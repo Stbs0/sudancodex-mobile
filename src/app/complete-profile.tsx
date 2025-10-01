@@ -18,7 +18,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
-import { tellUsMoreSchema } from "@/lib/schemas";
+import {
+  occupationEnum,
+  tellUsMoreSchema,
+  type tellUsMoreSchemaType,
+} from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { completeProfile } from "@/services/usersServices";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,21 +37,7 @@ import { View } from "react-native";
 const SelectOccupation = ({
   control,
 }: {
-  control: Control<
-    {
-      age: string;
-      phoneNumber: string;
-      university: string;
-      occupation: "Student" | "Administrator" | "Pharmacist" | "Other";
-    },
-    unknown,
-    {
-      age: string;
-      phoneNumber: string;
-      university: string;
-      occupation: "Student" | "Administrator" | "Pharmacist" | "Other";
-    }
-  >;
+  control: Control<tellUsMoreSchemaType>;
 }) => {
   return (
     <Controller
@@ -98,12 +88,7 @@ const CompleteProfileScreen = () => {
 
   const { mutate, status, error } = useMutation({
     mutationKey: ["complete-profile"],
-    mutationFn: async (data: {
-      age: string;
-      phoneNumber: string;
-      university: string;
-      occupation: "Student" | "Administrator" | "Pharmacist" | "Other";
-    }) => {
+    mutationFn: async (data: tellUsMoreSchemaType) => {
       return await completeProfile({ ...data, profileComplete: true });
     },
     onSuccess(data, variables, onMutateResult, context) {
@@ -189,7 +174,7 @@ const CompleteProfileScreen = () => {
                     onBlur={onBlur}
                     value={value}
                   />
-                  {error && console.log(error)}
+
                   {error && <FieldMessage message={error.message} />}
                 </>
               )}
@@ -219,10 +204,8 @@ const CompleteProfileScreen = () => {
     </View>
   );
 };
-const Occupation = [
-  { label: "Student", value: "Student" },
-  { label: "Administrator", value: "Administrator" },
-  { label: "Pharmacist", value: "Pharmacist" },
-  { label: "Other", value: "Other" },
-];
+const Occupation = occupationEnum.options.map((value) => ({
+  label: value,
+  value: value,
+}));
 export default CompleteProfileScreen;
