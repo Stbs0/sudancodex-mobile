@@ -18,11 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
-import {
-  occupationEnum,
-  tellUsMoreSchema,
-  type tellUsMoreSchemaType,
-} from "@/lib/schemas";
+import { tellUsMoreSchema, type tellUsMoreSchemaType } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { completeProfile } from "@/services/usersServices";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -82,7 +78,7 @@ const FieldMessage = ({ message }: { message: string | undefined }) => {
 
 const CompleteProfileScreen = () => {
   const form = useForm({
-    mode: "all",
+    mode: "onBlur",
     resolver: zodResolver(tellUsMoreSchema),
   });
 
@@ -186,6 +182,11 @@ const CompleteProfileScreen = () => {
           </View>
         </CardContent>
         <CardFooter>
+          {error && (
+            <Text className="text-red-500 text-sm">
+              Failed to update profile. Please try again.
+            </Text>
+          )}
           <Button
             disabled={status === "pending"}
             className="w-full"
@@ -204,8 +205,10 @@ const CompleteProfileScreen = () => {
     </View>
   );
 };
-const Occupation = occupationEnum.options.map((value) => ({
-  label: value,
-  value: value,
-}));
+const Occupation = [
+  { label: "Student", value: "Student" },
+  { label: "Administrator", value: "Administrator" },
+  { label: "Pharmacist", value: "Pharmacist" },
+  { label: "Other", value: "Other" },
+];
 export default CompleteProfileScreen;

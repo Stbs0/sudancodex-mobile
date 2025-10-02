@@ -53,15 +53,14 @@ export default {
         "expo-sqlite",
         {
           enableFTS: true,
-          android: {
-            enableFTS: true,
-          },
         },
       ],
+      "expo-font",
+      "expo-web-browser",
       [
         "expo-asset",
         {
-          assets: ["./src/assets/data/mergedDrug.db"],
+          assetPatterns: ["src/assets/data/**/*.db"],
         },
       ],
     ],
