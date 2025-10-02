@@ -53,9 +53,6 @@ export default {
         "expo-sqlite",
         {
           enableFTS: true,
-          android: {
-            enableFTS: true,
-          },
         },
       ],
       "expo-font",
@@ -63,7 +60,7 @@ export default {
       [
         "expo-asset",
         {
-          assetPatterns: ["src/assets/**/*"],
+          assetPatterns: ["src/assets/data/**/*.db"],
         },
       ],
     ],

@@ -78,7 +78,7 @@ const FieldMessage = ({ message }: { message: string | undefined }) => {
 
 const CompleteProfileScreen = () => {
   const form = useForm({
-    mode: "all",
+    mode: "onBlur",
     resolver: zodResolver(tellUsMoreSchema),
   });
 
@@ -182,6 +182,11 @@ const CompleteProfileScreen = () => {
           </View>
         </CardContent>
         <CardFooter>
+          {error && (
+            <Text className="text-red-500 text-sm">
+              Failed to update profile. Please try again.
+            </Text>
+          )}
           <Button
             disabled={status === "pending"}
             className="w-full"
