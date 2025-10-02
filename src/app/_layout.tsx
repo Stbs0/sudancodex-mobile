@@ -18,10 +18,9 @@ import * as Network from "expo-network";
 import { SplashScreen, Stack } from "expo-router";
 import * as SQLite from "expo-sqlite";
 import { StatusBar } from "expo-status-bar";
+import { useColorScheme } from "nativewind";
 import React, { useEffect } from "react";
-import { useColorScheme } from "react-native";
 import "react-native-reanimated";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
@@ -53,8 +52,6 @@ GoogleSignin.configure({
 });
 
 export default function RootLayout() {
-  const scheme = useColorScheme();
-
   return (
     <QueryClientProvider client={queryClient}>
       <SQLite.SQLiteProvider
@@ -65,13 +62,7 @@ export default function RootLayout() {
         }}
       >
         <AuthProvider>
-          <ThemeProvider
-            value={scheme === "dark" ? NAV_THEME.dark : NAV_THEME.light}
-          >
-            <SafeAreaProvider>
-              <RootLayoutNav />
-            </SafeAreaProvider>
-          </ThemeProvider>
+          <RootLayoutNav />
         </AuthProvider>
       </SQLite.SQLiteProvider>
     </QueryClientProvider>
@@ -80,7 +71,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const { user, userLoading } = useAuth();
-
+  const { colorScheme } = useColorScheme();
   useEffect(() => {
     if (userLoading) {
       return;
@@ -96,7 +87,7 @@ function RootLayoutNav() {
   }
 
   return (
-    <>
+    <ThemeProvider value={NAV_THEME[colorScheme === "dark" ? "dark" : "light"]}>
       <StatusBar />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={user?.profileComplete === true}>
@@ -110,6 +101,6 @@ function RootLayoutNav() {
         </Stack.Protected>
       </Stack>
       <PortalHost />
-    </>
+    </ThemeProvider>
   );
 }
