@@ -6,7 +6,7 @@ const { withNativeWind } = require("nativewind/metro");
 const config = getDefaultConfig(__dirname);
 
 config.resolver.sourceExts.push("cjs", "sql");
-config.resolver.assetExts.push("db");
+// config.resolver.assetExts.push("db");
 
 config.resolver.unstable_enablePackageExports = false;
 

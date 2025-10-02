@@ -59,7 +59,6 @@ export const useInfiniteScroll = () => {
     () => query.data?.pages.flatMap((page) => page.drugs) ?? [],
     [query.data],
   );
-
   return {
     drugList,
     search,

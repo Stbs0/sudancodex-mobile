@@ -54,7 +54,7 @@ export default {
         {
           enableFTS: true,
           android: {
-            enableFTS: false,
+            enableFTS: true,
           },
         },
       ],
