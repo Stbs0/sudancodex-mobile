@@ -1,14 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Icon } from "@/components/ui/icon";
 import { Tabs } from "expo-router";
+import { List, Settings } from "lucide-react-native";
 import React from "react";
-
-function TabBarIcon(props: {
-  name: React.ComponentPropsWithoutRef<typeof Ionicons>["name"];
-
-  color: string;
-}) {
-  return <Ionicons style={{ marginBottom: -3 }} {...props} />;
-}
 
 export default function TabLayout() {
   return (
@@ -19,7 +12,7 @@ export default function TabLayout() {
           title: "Drug List",
           tabBarLabel: "Drug List",
           headerShown: false,
-          tabBarIcon: (props) => <TabBarIcon name="list" {...props} />,
+          tabBarIcon: (props) => <Icon as={List} {...props} />,
         }}
       />
       <Tabs.Screen
@@ -27,7 +20,7 @@ export default function TabLayout() {
         options={{
           title: "Settings",
           tabBarLabel: "Settings",
-          tabBarIcon: (props) => <TabBarIcon name="settings" {...props} />,
+          tabBarIcon: (props) => <Icon as={Settings} {...props} />,
         }}
       />
 
