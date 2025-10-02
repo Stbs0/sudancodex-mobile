@@ -23,11 +23,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="settings"
         options={{
-          title: "Profile",
-          tabBarLabel: "Profile",
-          tabBarIcon: (props) => <TabBarIcon name="person" {...props} />,
+          title: "Settings",
+          tabBarLabel: "Settings",
+          tabBarIcon: (props) => <TabBarIcon name="settings" {...props} />,
         }}
       />
 
