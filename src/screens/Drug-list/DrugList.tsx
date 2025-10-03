@@ -59,7 +59,7 @@ const DrugList = () => {
         }}
         keyboardShouldPersistTaps="always"
       />
-      <View className="m-2">
+      <View className="m-2 dark:bg-black">
         <Input
           onChangeText={debouncedSetSearch}
           className="border rounded-md "
