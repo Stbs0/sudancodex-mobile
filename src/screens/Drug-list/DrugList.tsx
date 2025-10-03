@@ -3,8 +3,9 @@ import { Text } from "@/components/ui/text";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
+import { LegendList } from "@legendapp/list";
 import React, { useCallback, useMemo } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 const DrugList = () => {
   const {
@@ -34,12 +35,13 @@ const DrugList = () => {
     return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
   return (
     <>
-      <FlatList
+      <LegendList
+        recycleItems={true}
         // getItemLayout={getItemLayout}
         data={drugList}
         renderItem={renderItem}
         keyExtractor={(item) => item.no}
-        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         ListFooterComponent={() => {
           if (isFetchingNextPage) return <ActivityIndicator size="large" />;
           if (!hasNextPage && drugList.length > 0)
