@@ -33,22 +33,24 @@ const CardModal = () => {
               <View className="flex-row ">
                 <Text>
                   <Text className=" font-extrabold text-neutral-700   dark:text-blue-200  ">
-                    {brandName + " " + strength}
+                    {brandName ||
+                      "No Available Data" + " " + strength ||
+                      "No Available Data"}
                   </Text>
                   <Text className="font-bold"> — </Text>
                   <Text className="dark:text-rose-400 text-rose-500">
-                    {packSize}
+                    {packSize || "No Available Data"}
                   </Text>
                 </Text>
               </View>
               <View className=" gap-1 font-bold text-sm ">
                 <Text>
                   <Text className="dark:text-green-400 text-green-500 font-extrabold">
-                    {genericName}
+                    {genericName || "No Available Data"}
                   </Text>
                   <Text className="font-bold text-sm "> — </Text>
                   <Text className="font-bold dark:text-blue-400 text-blue-700">
-                    {dosageFormName}
+                    {dosageFormName || "No Available Data"}
                   </Text>
                 </Text>
               </View>

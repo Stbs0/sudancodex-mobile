@@ -86,7 +86,7 @@ const DrugCard = memo(
               <View className="flex-row ">
                 <Text numberOfLines={1} ellipsizeMode="tail">
                   <Text className=" font-extrabold text-neutral-700   dark:text-blue-200  ">
-                    {brandName + " " + strength}
+                    {brandName || "NAD" + " " + strength || "NAD"}
                   </Text>
                   <Text className="font-bold"> — </Text>
                   <Text
@@ -94,18 +94,18 @@ const DrugCard = memo(
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
-                    {packSize}
+                    {packSize || "NAD"}
                   </Text>
                 </Text>
               </View>
               <View className=" gap-1 font-bold text-sm ">
                 <Text numberOfLines={2} ellipsizeMode="tail">
                   <Text className="dark:text-green-400 text-green-500 font-extrabold">
-                    {genericName}
+                    {genericName || "NAD"}
                   </Text>
                   <Text className="font-bold text-sm "> — </Text>
                   <Text className="font-bold dark:text-blue-400 text-blue-700">
-                    {dosageFormName}
+                    {dosageFormName || "NAD"}
                   </Text>
                 </Text>
               </View>
@@ -117,21 +117,21 @@ const DrugCard = memo(
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {companyName}
+                {companyName || "NAD"}
               </Text>
               <Text
                 className="text-sm font-bold dark:text-orange-400 text-orange-700"
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {agentName}
+                {agentName || "NAD"}
               </Text>
               <Text
                 className="text-sm font-bold dark:text-violet-400 text-violet-500"
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {countryOfOrigin}
+                {countryOfOrigin || "NAD"}
               </Text>
             </View>
           </CardContent>
