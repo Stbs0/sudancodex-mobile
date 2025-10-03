@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import type { Drug } from "@/types";
@@ -44,58 +43,59 @@ const DrugCard = memo(
           accessibilityRole="button"
           accessibilityLabel={`${brandName} details`}
         >
-          <Card className=" ">
-            <CardContent className="gap-2">
-              <View className="gap-2   ">
-                <View className="flex-row gap-2">
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    className=" font-bold text-gray-800 shrink  dark:text-blue-200  "
-                  >
-                    {brandName}
+          <Card className=" py-2 rounded-none border-2 shadow-black shadow-md">
+            <CardContent className="gap-1">
+              <View className="gap-1   ">
+                <View className="flex-row ">
+                  <Text numberOfLines={1} ellipsizeMode="tail">
+                    <Text className=" font-extrabold text-neutral-700   dark:text-blue-200  ">
+                      {brandName + " " + strength}
+                    </Text>
+                    <Text className="font-bold"> — </Text>
+                    <Text
+                      className="dark:text-rose-400 text-rose-500"
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {packSize}
+                    </Text>
                   </Text>
-                  <Badge variant={"outline"} className="shrink">
-                    <Text numberOfLines={1} ellipsizeMode="tail">
-                      {dosageFormName}
-                    </Text>
-                  </Badge>
                 </View>
-                <View className="flex-row gap-1 ">
-                  <Badge variant={"destructive"} className="shrink">
-                    <Text numberOfLines={2} ellipsizeMode="tail">
-                      {strength}
-                    </Text>
-                  </Badge>
-                  <Badge variant={"genericName"} className="shrink">
-                    <Text numberOfLines={2} ellipsizeMode="tail">
+                <View className=" gap-1 font-bold text-sm ">
+                  <Text numberOfLines={2} ellipsizeMode="tail">
+                    <Text className="dark:text-green-400 text-green-500 font-extrabold">
                       {genericName}
                     </Text>
-                  </Badge>
+                    <Text className="font-bold text-sm "> — </Text>
+                    <Text className="font-bold dark:text-blue-400 text-blue-700">
+                      {dosageFormName}
+                    </Text>
+                  </Text>
                 </View>
               </View>
 
-              <View className="items-start gap-2 ">
-                <Badge className="shrink">
-                  <Text numberOfLines={1} ellipsizeMode="tail">
-                    {packSize}
-                  </Text>
-                </Badge>
-                <Badge variant={"country"}>
-                  <Text numberOfLines={1} ellipsizeMode="tail">
-                    {countryOfOrigin}
-                  </Text>
-                </Badge>
-                <Badge variant={"company"} className="shrink">
-                  <Text numberOfLines={1} ellipsizeMode="tail">
-                    {companyName}
-                  </Text>
-                </Badge>
-                <Badge variant={"agent"}>
-                  <Text numberOfLines={1} ellipsizeMode="tail">
-                    {agentName}
-                  </Text>
-                </Badge>
+              <View className="items-start gap-1 ">
+                <Text
+                  className="text-sm font-bold dark:text-pink-400 text-pink-700"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {companyName}
+                </Text>
+                <Text
+                  className="text-sm font-bold dark:text-orange-400 text-orange-700"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {agentName}
+                </Text>
+                <Text
+                  className="text-sm font-bold dark:text-violet-400 text-violet-500"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {countryOfOrigin}
+                </Text>
               </View>
             </CardContent>
           </Card>
