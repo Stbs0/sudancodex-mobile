@@ -1,11 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import ModalProvider from "@/providers/ModalProvider";
 import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
 import { LegendList } from "@legendapp/list";
 import React, { useCallback, useMemo } from "react";
 import { ActivityIndicator, View } from "react-native";
+import CardModal from "./CardModal";
 
 const DrugList = () => {
   const {
@@ -31,10 +33,12 @@ const DrugList = () => {
   }, [setSearch]);
 
   if (error) return <Text className="text-destructive">{String(error)}</Text>;
+
   if (isLoading)
     return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
+
   return (
-    <>
+    <ModalProvider>
       <LegendList
         recycleItems={true}
         // getItemLayout={getItemLayout}
@@ -59,6 +63,7 @@ const DrugList = () => {
         }}
         keyboardShouldPersistTaps="always"
       />
+      <CardModal />
       <View className="m-2 dark:bg-black">
         <Input
           onChangeText={debouncedSetSearch}
@@ -66,7 +71,7 @@ const DrugList = () => {
           placeholder="Search Drugs. .."
         />
       </View>
-    </>
+    </ModalProvider>
   );
 };
 
