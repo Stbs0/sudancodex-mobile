@@ -13,7 +13,7 @@ const DrugPropertyDescription = ({
   return (
     <View
       className={cn(
-        "flex flex-col gap-1 border-l-2 border-blue-400 p-2",
+        "flex flex-col gap-1 border-l-2 border-b-2  p-2",
         className,
       )}
     >
