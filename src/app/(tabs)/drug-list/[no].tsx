@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import DrugPropertyDescription from "@/screens/Drug-list/DrugCard/DrugPropertyDescription";
@@ -11,6 +12,7 @@ import type { Drug, DrugInfoTypes } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
+import { AlertCircle } from "lucide-react-native";
 import React, { useEffect } from "react";
 import {
   ActivityIndicator,
@@ -98,81 +100,97 @@ const DrugInfo = () => {
       ) : isLoading ? (
         <ActivityIndicator size="large" style={{ marginTop: 16 }} />
       ) : data ? (
-        <View className="mt-4">
-          <Accordion type="multiple" collapsible>
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Title"
-              content={data.title}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Clinical"
-              content={data.clinical}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Indications"
-              content={data.ind}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Adult"
-              content={data.adult}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Administration"
-              content={data.admin}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Ped"
-              content={data.ped}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Side Effects"
-              content={data.side}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Pregnancy"
-              content={data.prgnancy}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Interminor"
-              content={data.interminor}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Contraindications"
-              content={data.contra}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Classification"
-              content={data.clas}
-            />
-            <DrugAccordion
-              colorSchema={color}
-              width={width}
-              trigger="Mode"
-              content={data.mode}
-            />
-          </Accordion>
+        <View className="mt-4 gap-4">
+          <View className="mt-4">
+            <Accordion type="multiple" collapsible>
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Title"
+                content={data.title}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Clinical"
+                content={data.clinical}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Indications"
+                content={data.ind}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Adult"
+                content={data.adult}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Administration"
+                content={data.admin}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Ped"
+                content={data.ped}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Side Effects"
+                content={data.side}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Pregnancy"
+                content={data.prgnancy}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Interminor"
+                content={data.interminor}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Contraindications"
+                content={data.contra}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Classification"
+                content={data.clas}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Mode"
+                content={data.mode}
+              />
+            </Accordion>
+          </View>
+          <Alert
+            icon={AlertCircle}
+            className=" border-yellow-500/50 "
+            iconClassName="text-yellow-500"
+          >
+            <AlertTitle className="font-semibold ">Disclaimer</AlertTitle>
+            <AlertDescription className="text-sm leading-5">
+              This app provides drug information for
+              <Text className="font-semibold "> reference only</Text>. It is not
+              a substitute for professional judgment or official product
+              literature. Always verify details before prescribing or
+              dispensing.
+            </AlertDescription>
+          </Alert>
         </View>
       ) : (
         <Text>No data available</Text>
