@@ -1,11 +1,12 @@
-import { auth } from "@/lib/firebaseConfig";
 import {
   FacebookAuthProvider,
+  getAuth,
   GoogleAuthProvider,
   signInWithPopup,
   signInWithRedirect,
   signOut,
 } from "@react-native-firebase/auth";
+const auth = getAuth();
 
 export const logout = async () => {
   return await signOut(auth);
