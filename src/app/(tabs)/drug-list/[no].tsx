@@ -57,13 +57,8 @@ const DrugInfo = () => {
           <View className="gap-2">
             <DrugPropertyDescription
               title="Generic Name"
-              className="border-red-400"
+              className="border-green-700 dark:border-green-400"
               property={drug.genericName}
-            />
-            <DrugPropertyDescription
-              title="Dosage Form"
-              className="border-green-400"
-              property={drug.dosageFormName}
             />
             <DrugPropertyDescription
               title="Strength"
@@ -72,21 +67,27 @@ const DrugInfo = () => {
             />
             <DrugPropertyDescription
               title="Pack Size"
-              className="border-gray-400"
+              className="dark:border-rose-400 border-rose-700"
               property={drug.packSize}
+            />
+            <DrugPropertyDescription
+              title="Dosage Form"
+              className="border-blue-700 dark:border-blue-400"
+              property={drug.dosageFormName}
+            />
+            <DrugPropertyDescription
+              title="Company Name"
+              className="border-pink-700 dark:border-pink-400 "
+              property={drug.companyName}
             />
             <DrugPropertyDescription
               title="Agent"
               property={drug.agentName}
-              className="border-white"
-            />
-            <DrugPropertyDescription
-              title="Company Name"
-              className="border-purple-400"
-              property={drug.companyName}
+              className="border-orange-700 dark:border-orange-400 "
             />
             <DrugPropertyDescription
               title="Country of Origin"
+              className="border-violet-700 dark:border-violet-400"
               property={drug.countryOfOrigin}
             />
           </View>
