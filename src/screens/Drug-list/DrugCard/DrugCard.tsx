@@ -86,11 +86,11 @@ const DrugCard = memo(
               <View className="flex-row ">
                 <Text numberOfLines={1} ellipsizeMode="tail">
                   <Text className=" font-extrabold text-neutral-700   dark:text-blue-200  ">
-                    {brandName || "NAD" + " " + strength || "NAD"}
+                    {(brandName || "NAD") + " " + (strength || "NAD")}
                   </Text>
                   <Text className="font-bold"> — </Text>
                   <Text
-                    className="dark:text-rose-400 text-rose-500"
+                    className="dark:text-rose-400 text-rose-700"
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >

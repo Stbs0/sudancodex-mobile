@@ -95,7 +95,7 @@ const DrugCardSettings = ({
           <View className="flex-row flex-nowrap  ">
             <TooltipText tooltip="This is the brand/trade name and the concentration/strength">
               <Text className=" font-extrabold text-neutral-700  underline decoration-rose-500 decoration-2  dark:text-blue-200  ">
-                {brandName || "NAD" + " " + strength || "NAD"}
+                {(brandName || "NAD") + " " + (strength || "NAD")}
               </Text>
             </TooltipText>
 
