@@ -6,13 +6,19 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import DrugPropertyDescription from "@/screens/Drug-list/DrugCard/DrugPropertyDescription";
 import type { Drug, DrugInfoTypes } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { AlertCircle } from "lucide-react-native";
+import { AlertCircle, Info } from "lucide-react-native";
 import React, { useEffect } from "react";
 import {
   ActivityIndicator,
@@ -46,7 +52,6 @@ const DrugInfo = () => {
     },
   });
 
-  // console.log(data);
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -101,20 +106,27 @@ const DrugInfo = () => {
         <ActivityIndicator size="large" style={{ marginTop: 16 }} />
       ) : data ? (
         <View className="mt-4 gap-4">
+          <View>
+            <Tooltip>
+              <TooltipTrigger className="flex-row items-center justify-center gap-1 opacity-80 active:opacity-100">
+                <Icon as={Info} size={18} />
+                <Text className="text-lg font-bold">
+                  {drug.genericName} = {data.title}
+                </Text>
+              </TooltipTrigger>
+
+              <TooltipContent>
+                <Text>
+                  Note: The Sudan drug index data provided may contain
+                  formatting errors, and some information could be inaccurate.
+                  Please review the details below carefully. If any information
+                  does not match your records, disregard it.
+                </Text>
+              </TooltipContent>
+            </Tooltip>
+          </View>
           <View className="mt-4">
             <Accordion type="multiple" collapsible>
-              <DrugAccordion
-                colorSchema={color}
-                width={width}
-                trigger="Title"
-                content={data.title}
-              />
-              <DrugAccordion
-                colorSchema={color}
-                width={width}
-                trigger="Clinical"
-                content={data.clinical}
-              />
               <DrugAccordion
                 colorSchema={color}
                 width={width}
@@ -124,8 +136,32 @@ const DrugInfo = () => {
               <DrugAccordion
                 colorSchema={color}
                 width={width}
-                trigger="Adult"
+                trigger="Classification"
+                content={data.clas}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Mechanism of Action"
+                content={data.mode}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Clinical use"
+                content={data.clinical}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Adult Dose"
                 content={data.adult}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Pediatric Dose"
+                content={data.ped}
               />
               <DrugAccordion
                 colorSchema={color}
@@ -136,8 +172,8 @@ const DrugInfo = () => {
               <DrugAccordion
                 colorSchema={color}
                 width={width}
-                trigger="Ped"
-                content={data.ped}
+                trigger="Contraindications"
+                content={data.contra}
               />
               <DrugAccordion
                 colorSchema={color}
@@ -154,26 +190,14 @@ const DrugInfo = () => {
               <DrugAccordion
                 colorSchema={color}
                 width={width}
-                trigger="Interminor"
+                trigger="Major Interactions"
+                content={data.intermajer}
+              />
+              <DrugAccordion
+                colorSchema={color}
+                width={width}
+                trigger="Minor Interactions"
                 content={data.interminor}
-              />
-              <DrugAccordion
-                colorSchema={color}
-                width={width}
-                trigger="Contraindications"
-                content={data.contra}
-              />
-              <DrugAccordion
-                colorSchema={color}
-                width={width}
-                trigger="Classification"
-                content={data.clas}
-              />
-              <DrugAccordion
-                colorSchema={color}
-                width={width}
-                trigger="Mode"
-                content={data.mode}
               />
             </Accordion>
           </View>
@@ -220,7 +244,7 @@ const DrugAccordion = ({
   width: number;
   colorSchema: ColorSchemeName;
 }) => {
-  const html = typeof content === "string" ? content : "";
+  const html = typeof content === "string" ? content : "No Data Available";
   return (
     <AccordionItem key={trigger} value={trigger}>
       <AccordionTrigger>
