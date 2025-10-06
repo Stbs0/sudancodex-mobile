@@ -1,10 +1,13 @@
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import ModalProvider from "@/providers/ModalProvider";
 import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
+import { LegendList } from "@legendapp/list";
 import React, { useCallback, useMemo } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import CardModal from "./CardModal";
 
 const DrugList = () => {
   const {
@@ -30,16 +33,19 @@ const DrugList = () => {
   }, [setSearch]);
 
   if (error) return <Text className="text-destructive">{String(error)}</Text>;
+
   if (isLoading)
     return <ActivityIndicator size="large" style={{ marginTop: 16 }} />;
+
   return (
-    <>
-      <FlatList
+    <ModalProvider>
+      <LegendList
+        recycleItems={true}
         // getItemLayout={getItemLayout}
         data={drugList}
         renderItem={renderItem}
         keyExtractor={(item) => item.no}
-        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         ListFooterComponent={() => {
           if (isFetchingNextPage) return <ActivityIndicator size="large" />;
           if (!hasNextPage && drugList.length > 0)
@@ -57,14 +63,15 @@ const DrugList = () => {
         }}
         keyboardShouldPersistTaps="always"
       />
-      <View className="m-2">
+      <CardModal />
+      <View className="m-2 dark:bg-black">
         <Input
           onChangeText={debouncedSetSearch}
           className="border rounded-md "
           placeholder="Search Drugs. .."
         />
       </View>
-    </>
+    </ModalProvider>
   );
 };
 
