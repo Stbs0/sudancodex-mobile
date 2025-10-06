@@ -1,6 +1,7 @@
 import DrugList from "@/screens/Drug-list/DrugList";
+import { useColorScheme } from "nativewind";
 import React from "react";
-import { KeyboardAvoidingView, View, useColorScheme } from "react-native";
+import { KeyboardAvoidingView, View } from "react-native";
 import Svg, { Defs, Pattern, Rect } from "react-native-svg";
 
 const DrugListScreen = () => {
@@ -22,10 +23,10 @@ const DrugListScreen = () => {
 export default DrugListScreen;
 
 function GridBackground({ children }: { children: React.ReactNode }) {
-  const scheme = useColorScheme(); // "light" | "dark"
+  const { colorScheme } = useColorScheme(); // "light" | "dark"
 
   // Change grid color depending on theme
-  const strokeColor = scheme === "dark" ? "#262626" : "#e0e0e0"; // gray-800 vs gray-200
+  const strokeColor = colorScheme === "dark" ? "#262626" : "#e0e0e0"; // gray-800 vs gray-200
 
   return (
     <View style={{ flex: 1 }}>

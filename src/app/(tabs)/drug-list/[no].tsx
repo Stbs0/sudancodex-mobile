@@ -250,7 +250,8 @@ const DrugAccordion = ({
   width: number;
   colorSchema: ColorSchemeName;
 }) => {
-  const html = typeof content === "string" ? content : "No Data Available";
+  const html =
+    typeof content === "string" ? content : "<p><i>No data available</i></p>";
   return (
     <AccordionItem key={trigger} value={trigger}>
       <AccordionTrigger>
