@@ -18,7 +18,7 @@ import type { Drug, DrugInfoTypes } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { AlertCircle, Info } from "lucide-react-native";
+import { AlertCircle, FileX, Info } from "lucide-react-native";
 import React, { useEffect } from "react";
 import {
   ActivityIndicator,
@@ -54,11 +54,12 @@ const DrugInfo = () => {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      // style={{ flex: 1, gap: 2 }}
       contentContainerStyle={{ padding: 16 }}
       showsVerticalScrollIndicator={true}
+      className="flex-1 gap-4 "
     >
-      <Card className="py-4 w-full ">
+      <Card className="py-4 mb-4 w-full ">
         <CardTitle className="text-center">{drug.brandName}</CardTitle>
         <CardContent className="gap-2 w-full">
           <View className="gap-2">
@@ -217,7 +218,12 @@ const DrugInfo = () => {
           </Alert>
         </View>
       ) : (
-        <Text>No data available</Text>
+        <Alert icon={FileX}>
+          <AlertTitle className="font-semibold ">No Data Available</AlertTitle>
+          <AlertDescription className="text-sm leading-5">
+            We haven&apos;t found any data related to the generic name
+          </AlertDescription>
+        </Alert>
       )}
     </ScrollView>
   );
