@@ -1,4 +1,13 @@
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import ModalProvider from "@/providers/ModalProvider";
@@ -18,11 +27,11 @@ const DrugList = () => {
     error,
     isLoading,
     hasNextPage,
+
     defferedSearch,
   } = useInfiniteScroll();
   const listRef = useRef<LegendListRef | null>(null);
   useEffect(() => {
-    console.log("ref", listRef.current);
     listRef.current?.scrollToOffset?.({ offset: 0, animated: true });
   }, [defferedSearch]);
 
@@ -73,16 +82,76 @@ const DrugList = () => {
         }}
         keyboardShouldPersistTaps="always"
       />
+      <SearchInput debouncedSetSearch={debouncedSetSearch} />
       <CardModal />
-      <View className="m-2 mt-0 dark:bg-black">
-        <Input
-          onChangeText={debouncedSetSearch}
-          className="border rounded-md "
-          placeholder="Search Drugs. .."
-        />
-      </View>
     </ModalProvider>
   );
 };
 
+const SearchInput = ({
+  debouncedSetSearch,
+}: {
+  debouncedSetSearch: (q: string) => void;
+}) => {
+  const [selectedItem, setSelectedItem] = React.useState(seachItems[0]);
+  const [width, setWidth] = React.useState(0);
+  return (
+    <View className="relative m-2 flex-row items-center">
+      <Input
+        onChangeText={debouncedSetSearch}
+        className={`border rounded-md w-full  dark:bg-black`}
+        style={{ paddingRight: width + 8 }}
+        placeholder={`Search by ${selectedItem.label}...`}
+      />
+
+      {/* Dropdown overlay on right side */}
+      <View
+        className="absolute right-2 top-1/2 -translate-y-1/2 elevation-md"
+        pointerEvents="box-none"
+      >
+        <Select>
+          <SelectTrigger
+            onLayout={(event) => {
+              const { width } = event.nativeEvent.layout;
+              setWidth(width);
+            }}
+            className="h-9 border-0 shadow-none px-2 bg-transparent"
+          >
+            <SelectValue
+              placeholder="By"
+              className="text-muted-foreground text-sm"
+            />
+          </SelectTrigger>
+
+          <SelectContent side="top">
+            <SelectLabel>
+              <Text>Search Term</Text>
+            </SelectLabel>
+            <SelectSeparator />
+            {seachItems.map((item) => (
+              <SelectItem
+                key={item.value}
+                value={item.value}
+                label={item.label}
+                onPress={() => setSelectedItem(item)}
+              >
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </View>
+    </View>
+  );
+};
+const seachItems = [
+  { value: "genericName", label: "Generic Name" },
+  { value: "brandName", label: "Brand Name" },
+  { value: "strength", label: "Strength" },
+  { value: "packSize", label: "Pack Size" },
+  { value: "dosageFormName", label: "Dosage Form" },
+  { value: "companyName", label: "Company Name" },
+  { value: "countryOfOrigin", label: "Country of Origin" },
+  { value: "agentName", label: "Agent" },
+];
 export default DrugList;
