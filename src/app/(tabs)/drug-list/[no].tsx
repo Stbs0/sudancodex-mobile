@@ -43,7 +43,6 @@ const DrugInfo = () => {
     queryKey: ["drugInfo", drug.drugInfoRef],
 
     queryFn: async () => {
-      console.log(drug.drugInfoRef);
       return await db.getFirstAsync<DrugInfoTypes>(
         `SELECT * FROM drugInfo WHERE drug_id = ? LIMIT 1`,
         [drug.drugInfoRef],

@@ -17,8 +17,10 @@ const DrugPropertyDescription = ({
         className,
       )}
     >
-      <Text className="text-white/30 font-bold text-xs">{String(title)}</Text>
-      <Text className="text-bold text-white ">
+      <Text className="dark:text-white/30 font-bold text-xs text-black/20">
+        {String(title)}
+      </Text>
+      <Text className="text-bold dark:text-white ">
         {String(property || "No Available Data")}
       </Text>
     </View>
