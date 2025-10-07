@@ -23,33 +23,19 @@ export const useInfiniteScroll = () => {
     queryFn: async ({ pageParam = 0 }) => {
       const searchTerm = `%${defferedSearch}%`; // LIKE %term%
 
-      const drugs = (await db.getAllAsync(
-        `
+      const query = `
         SELECT *
         FROM drugIndex
-        WHERE brandName LIKE ?
-           OR genericName LIKE ?
-           OR dosageFormName LIKE ?
-           OR strength LIKE ?
-           OR packSize LIKE ?
-           OR companyName LIKE ?
-           OR countryOfOrigin LIKE ?
-           OR agentName LIKE ?
-        ORDER BY genericName COLLATE NOCASE ASC, brandName COLLATE NOCASE ASC
-        LIMIT ${PAGE_SIZE} OFFSET ?;
-        `,
-        [
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          pageParam,
-        ],
-      )) as Drug[];
+        WHERE ${searchBy} LIKE $searchTerm
+        ORDER BY ${searchBy} ASC
+        LIMIT $PAGE_SIZE OFFSET $pageParam;
+      `;
+
+      const drugs = (await db.getAllAsync(query, {
+        $searchTerm: searchTerm,
+        $PAGE_SIZE: PAGE_SIZE,
+        $pageParam: pageParam,
+      })) as Drug[];
 
       return {
         drugs,
