@@ -36,12 +36,12 @@ const DrugList = () => {
     searchBy,
     setSearchBy,
 
-    defferedSearch,
+    deferredSearch,
   } = useInfiniteScroll();
   const listRef = useRef<LegendListRef | null>(null);
   useEffect(() => {
     listRef.current?.scrollToOffset?.({ offset: 0, animated: true });
-  }, [defferedSearch]);
+  }, [deferredSearch]);
 
   const renderItem = useCallback(({ item }: { item: Drug }) => {
     return <DrugCard {...item} />;

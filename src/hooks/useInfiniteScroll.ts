@@ -9,7 +9,7 @@ export const useInfiniteScroll = () => {
   const db = useSQLiteContext();
   const [search, setSearch] = useState("");
   const [searchBy, setSearchBy] = useState<keyof Drug>("genericName");
-  const defferedSearch = useDeferredValue(search);
+  const deferredSearch = useDeferredValue(search);
 
   const {
     fetchNextPage,
@@ -19,9 +19,9 @@ export const useInfiniteScroll = () => {
     hasNextPage,
     data,
   } = useInfiniteQuery({
-    queryKey: ["drugList", defferedSearch],
+    queryKey: ["drugList", deferredSearch, searchBy],
     queryFn: async ({ pageParam = 0 }) => {
-      const searchTerm = `%${defferedSearch}%`; // LIKE %term%
+      const searchTerm = `%${deferredSearch}%`; // LIKE %term%
 
       const query = `
         SELECT *
@@ -57,7 +57,7 @@ export const useInfiniteScroll = () => {
     drugList,
     search,
     setSearch,
-    defferedSearch,
+    deferredSearch,
     setSearchBy,
     searchBy,
     fetchNextPage,
