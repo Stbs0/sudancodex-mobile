@@ -110,13 +110,17 @@ const SearchInput = ({
   searchBy: keyof Drug;
 }) => {
   const [width, setWidth] = React.useState(0);
+  const placeholder = searchItems.find(
+    (item) => item.value === searchBy,
+  )?.label;
+
   return (
     <View className="relative m-2 flex-row items-center">
       <Input
         onChangeText={debouncedSetSearch}
         className={`border rounded-md w-full  dark:bg-black`}
         style={{ paddingRight: width + 8 }}
-        placeholder={`Search by ${searchBy}...`}
+        placeholder={`Search by ${placeholder}...`}
       />
 
       {/* Dropdown overlay on right side */}
@@ -133,7 +137,7 @@ const SearchInput = ({
             className="h-9 border-0 shadow-none px-2 bg-transparent"
           >
             <SelectValue
-              placeholder="By"
+              placeholder={placeholder || "Generic Name"}
               className="text-muted-foreground text-sm"
             />
           </SelectTrigger>
@@ -148,7 +152,7 @@ const SearchInput = ({
                 key={item.value}
                 value={item.value}
                 label={item.label}
-                onPress={() => setSearchBy(item.value!)}
+                onPress={() => setSearchBy(item.value)}
               >
                 {item.label}
               </SelectItem>
@@ -162,11 +166,11 @@ const SearchInput = ({
 const searchItems: { value: keyof Drug; label: string }[] = [
   { value: "genericName", label: "Generic Name" },
   { value: "brandName", label: "Brand Name" },
-  { value: "strength", label: "Strength" },
-  { value: "packSize", label: "Pack Size" },
-  { value: "dosageFormName", label: "Dosage Form" },
+  { value: "agentName", label: "Agent" },
   { value: "companyName", label: "Company Name" },
   { value: "countryOfOrigin", label: "Country of Origin" },
-  { value: "agentName", label: "Agent" },
+  { value: "strength", label: "Strength" },
+  { value: "dosageFormName", label: "Dosage Form" },
+  { value: "packSize", label: "Pack Size" },
 ];
 export default DrugList;
