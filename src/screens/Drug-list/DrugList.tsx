@@ -1,11 +1,26 @@
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import ModalProvider from "@/providers/ModalProvider";
 import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
 import { LegendList, type LegendListRef } from "@legendapp/list";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  type Dispatch,
+} from "react";
 import { ActivityIndicator, View } from "react-native";
 import CardModal from "./CardModal";
 
@@ -18,12 +33,15 @@ const DrugList = () => {
     error,
     isLoading,
     hasNextPage,
-    defferedSearch,
+    searchBy,
+    setSearchBy,
+
+    deferredSearch,
   } = useInfiniteScroll();
   const listRef = useRef<LegendListRef | null>(null);
   useEffect(() => {
     listRef.current?.scrollToOffset?.({ offset: 0, animated: true });
-  }, [defferedSearch]);
+  }, [deferredSearch]);
 
   const renderItem = useCallback(({ item }: { item: Drug }) => {
     return <DrugCard {...item} />;
@@ -72,16 +90,87 @@ const DrugList = () => {
         }}
         keyboardShouldPersistTaps="always"
       />
+      <SearchInput
+        debouncedSetSearch={debouncedSetSearch}
+        setSearchBy={setSearchBy}
+        searchBy={searchBy}
+      />
       <CardModal />
-      <View className="m-2 mt-0 dark:bg-black">
-        <Input
-          onChangeText={debouncedSetSearch}
-          className="border rounded-md "
-          placeholder="Search Drugs. .."
-        />
-      </View>
     </ModalProvider>
   );
 };
 
+const SearchInput = ({
+  debouncedSetSearch,
+  setSearchBy,
+  searchBy,
+}: {
+  debouncedSetSearch: (q: string) => void;
+  setSearchBy: Dispatch<React.SetStateAction<keyof Drug>>;
+  searchBy: keyof Drug;
+}) => {
+  const [width, setWidth] = React.useState(0);
+  const placeholder = searchItems.find(
+    (item) => item.value === searchBy,
+  )?.label;
+
+  return (
+    <View className="relative m-2 flex-row items-center">
+      <Input
+        onChangeText={debouncedSetSearch}
+        className={`border rounded-md w-full  dark:bg-black`}
+        style={{ paddingRight: width + 8 }}
+        placeholder={`Search by ${placeholder}...`}
+      />
+
+      {/* Dropdown overlay on right side */}
+      <View
+        className="absolute right-2 top-1/2 -translate-y-1/2 elevation-md"
+        pointerEvents="box-none"
+      >
+        <Select>
+          <SelectTrigger
+            onLayout={(event) => {
+              const { width } = event.nativeEvent.layout;
+              setWidth(width);
+            }}
+            className="h-9 border-0 shadow-none px-2 bg-transparent"
+          >
+            <SelectValue
+              placeholder={placeholder || "Generic Name"}
+              className="text-muted-foreground text-sm"
+            />
+          </SelectTrigger>
+
+          <SelectContent side="top">
+            <SelectLabel>
+              <Text>Search Term</Text>
+            </SelectLabel>
+            <SelectSeparator />
+            {searchItems.map((item) => (
+              <SelectItem
+                key={item.value}
+                value={item.value}
+                label={item.label}
+                onPress={() => setSearchBy(item.value)}
+              >
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </View>
+    </View>
+  );
+};
+const searchItems: { value: keyof Drug; label: string }[] = [
+  { value: "genericName", label: "Generic Name" },
+  { value: "brandName", label: "Brand Name" },
+  { value: "agentName", label: "Agent" },
+  { value: "companyName", label: "Company Name" },
+  { value: "countryOfOrigin", label: "Country of Origin" },
+  { value: "strength", label: "Strength" },
+  { value: "dosageFormName", label: "Dosage Form" },
+  { value: "packSize", label: "Pack Size" },
+];
 export default DrugList;

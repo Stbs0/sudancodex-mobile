@@ -8,40 +8,34 @@ const PAGE_SIZE = 10;
 export const useInfiniteScroll = () => {
   const db = useSQLiteContext();
   const [search, setSearch] = useState("");
-  const defferedSearch = useDeferredValue(search);
+  const [searchBy, setSearchBy] = useState<keyof Drug>("genericName");
+  const deferredSearch = useDeferredValue(search);
 
-  const query = useInfiniteQuery({
-    queryKey: ["drugList", defferedSearch],
+  const {
+    fetchNextPage,
+    isFetchingNextPage,
+    error,
+    isLoading,
+    hasNextPage,
+    data,
+  } = useInfiniteQuery({
+    queryKey: ["drugList", deferredSearch, searchBy],
     queryFn: async ({ pageParam = 0 }) => {
-      const searchTerm = `%${defferedSearch}%`; // LIKE %term%
+      const searchTerm = `%${deferredSearch}%`; // LIKE %term%
 
-      const drugs = (await db.getAllAsync(
-        `
+      const query = `
         SELECT *
         FROM drugIndex
-        WHERE brandName LIKE ?
-           OR genericName LIKE ?
-           OR dosageFormName LIKE ?
-           OR strength LIKE ?
-           OR packSize LIKE ?
-           OR companyName LIKE ?
-           OR countryOfOrigin LIKE ?
-           OR agentName LIKE ?
-        ORDER BY genericName COLLATE NOCASE ASC, brandName COLLATE NOCASE ASC
-        LIMIT ${PAGE_SIZE} OFFSET ?;
-        `,
-        [
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          searchTerm,
-          pageParam,
-        ],
-      )) as Drug[];
+        WHERE ${searchBy} LIKE $searchTerm
+        ORDER BY ${searchBy} ASC
+        LIMIT $PAGE_SIZE OFFSET $pageParam;
+      `;
+
+      const drugs = (await db.getAllAsync(query, {
+        $searchTerm: searchTerm,
+        $PAGE_SIZE: PAGE_SIZE,
+        $pageParam: pageParam,
+      })) as Drug[];
 
       return {
         drugs,
@@ -56,14 +50,21 @@ export const useInfiniteScroll = () => {
 
   // Flatten all pages into a single list for convenience
   const drugList = useMemo(
-    () => query.data?.pages.flatMap((page) => page.drugs) ?? [],
-    [query.data],
+    () => data?.pages.flatMap((page) => page.drugs) ?? [],
+    [data],
   );
   return {
     drugList,
     search,
     setSearch,
-    defferedSearch,
-    ...query, // gives you error, isLoading, fetchNextPage, etc.
+    deferredSearch,
+    setSearchBy,
+    searchBy,
+    fetchNextPage,
+
+    isFetchingNextPage,
+    error,
+    isLoading,
+    hasNextPage,
   };
 };
