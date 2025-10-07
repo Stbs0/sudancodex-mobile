@@ -14,7 +14,13 @@ import ModalProvider from "@/providers/ModalProvider";
 import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
 import { LegendList, type LegendListRef } from "@legendapp/list";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  type Dispatch,
+} from "react";
 import { ActivityIndicator, View } from "react-native";
 import CardModal from "./CardModal";
 
@@ -27,6 +33,8 @@ const DrugList = () => {
     error,
     isLoading,
     hasNextPage,
+    searchBy,
+    setSearchBy,
 
     defferedSearch,
   } = useInfiniteScroll();
@@ -82,7 +90,11 @@ const DrugList = () => {
         }}
         keyboardShouldPersistTaps="always"
       />
-      <SearchInput debouncedSetSearch={debouncedSetSearch} />
+      <SearchInput
+        debouncedSetSearch={debouncedSetSearch}
+        setSearchBy={setSearchBy}
+        searchBy={searchBy}
+      />
       <CardModal />
     </ModalProvider>
   );
@@ -90,10 +102,13 @@ const DrugList = () => {
 
 const SearchInput = ({
   debouncedSetSearch,
+  setSearchBy,
+  searchBy,
 }: {
   debouncedSetSearch: (q: string) => void;
+  setSearchBy: Dispatch<React.SetStateAction<keyof Drug>>;
+  searchBy: keyof Drug;
 }) => {
-  const [selectedItem, setSelectedItem] = React.useState(seachItems[0]);
   const [width, setWidth] = React.useState(0);
   return (
     <View className="relative m-2 flex-row items-center">
@@ -101,7 +116,7 @@ const SearchInput = ({
         onChangeText={debouncedSetSearch}
         className={`border rounded-md w-full  dark:bg-black`}
         style={{ paddingRight: width + 8 }}
-        placeholder={`Search by ${selectedItem.label}...`}
+        placeholder={`Search by ${searchBy}...`}
       />
 
       {/* Dropdown overlay on right side */}
@@ -128,12 +143,12 @@ const SearchInput = ({
               <Text>Search Term</Text>
             </SelectLabel>
             <SelectSeparator />
-            {seachItems.map((item) => (
+            {searchItems.map((item) => (
               <SelectItem
                 key={item.value}
                 value={item.value}
                 label={item.label}
-                onPress={() => setSelectedItem(item)}
+                onPress={() => setSearchBy(item.value!)}
               >
                 {item.label}
               </SelectItem>
@@ -144,7 +159,7 @@ const SearchInput = ({
     </View>
   );
 };
-const seachItems = [
+const searchItems: { value: keyof Drug; label: string }[] = [
   { value: "genericName", label: "Generic Name" },
   { value: "brandName", label: "Brand Name" },
   { value: "strength", label: "Strength" },

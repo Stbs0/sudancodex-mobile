@@ -8,9 +8,17 @@ const PAGE_SIZE = 10;
 export const useInfiniteScroll = () => {
   const db = useSQLiteContext();
   const [search, setSearch] = useState("");
+  const [searchBy, setSearchBy] = useState<keyof Drug>("genericName");
   const defferedSearch = useDeferredValue(search);
 
-  const query = useInfiniteQuery({
+  const {
+    fetchNextPage,
+    isFetchingNextPage,
+    error,
+    isLoading,
+    hasNextPage,
+    data,
+  } = useInfiniteQuery({
     queryKey: ["drugList", defferedSearch],
     queryFn: async ({ pageParam = 0 }) => {
       const searchTerm = `%${defferedSearch}%`; // LIKE %term%
@@ -56,14 +64,21 @@ export const useInfiniteScroll = () => {
 
   // Flatten all pages into a single list for convenience
   const drugList = useMemo(
-    () => query.data?.pages.flatMap((page) => page.drugs) ?? [],
-    [query.data],
+    () => data?.pages.flatMap((page) => page.drugs) ?? [],
+    [data],
   );
   return {
     drugList,
     search,
     setSearch,
     defferedSearch,
-    ...query, // gives you error, isLoading, fetchNextPage, etc.
+    setSearchBy,
+    searchBy,
+    fetchNextPage,
+
+    isFetchingNextPage,
+    error,
+    isLoading,
+    hasNextPage,
   };
 };
