@@ -4,8 +4,8 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import ModalProvider from "@/providers/ModalProvider";
 import DrugCard from "@/screens/Drug-list/DrugCard/DrugCard";
 import type { Drug } from "@/types";
-import { LegendList } from "@legendapp/list";
-import React, { useCallback, useMemo } from "react";
+import { LegendList, type LegendListRef } from "@legendapp/list";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { ActivityIndicator, View } from "react-native";
 import CardModal from "./CardModal";
 
@@ -18,7 +18,12 @@ const DrugList = () => {
     error,
     isLoading,
     hasNextPage,
+    defferedSearch,
   } = useInfiniteScroll();
+  const listRef = useRef<LegendListRef | null>(null);
+  useEffect(() => {
+    listRef.current?.scrollToOffset?.({ offset: 0, animated: true });
+  }, [defferedSearch]);
 
   const renderItem = useCallback(({ item }: { item: Drug }) => {
     return <DrugCard {...item} />;
@@ -28,7 +33,9 @@ const DrugList = () => {
     let t: number | null = null;
     return (q: string) => {
       if (t) clearTimeout(t);
-      t = setTimeout(() => setSearch(q), 500);
+      t = setTimeout(() => {
+        setSearch(q);
+      }, 500);
     };
   }, [setSearch]);
 
@@ -43,7 +50,9 @@ const DrugList = () => {
         recycleItems={true}
         // getItemLayout={getItemLayout}
         data={drugList}
+        ref={listRef}
         renderItem={renderItem}
+        className="pt-4 "
         keyExtractor={(item) => item.no}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         ListFooterComponent={() => {
@@ -64,7 +73,7 @@ const DrugList = () => {
         keyboardShouldPersistTaps="always"
       />
       <CardModal />
-      <View className="m-2 dark:bg-black">
+      <View className="m-2 mt-0 dark:bg-black">
         <Input
           onChangeText={debouncedSetSearch}
           className="border rounded-md "

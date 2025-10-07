@@ -13,15 +13,14 @@ const DrugPropertyDescription = ({
   return (
     <View
       className={cn(
-        "flex flex-col gap-1 border-l-2 border-blue-400 p-2",
+        "flex flex-col  border-l-2 border-b-2  p-2 pt-0",
         className,
       )}
     >
-      {Array.isArray(property) ? (
-        property.map((line, i) => <Text key={i}>{line}</Text>)
-      ) : (
-        <Text>{String(property ?? "")}</Text>
-      )}
+      <Text className="text-white/30 font-bold text-xs">{String(title)}</Text>
+      <Text className="text-bold text-white ">
+        {String(property || "No Available Data")}
+      </Text>
     </View>
   );
 };

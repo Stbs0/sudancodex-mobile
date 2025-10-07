@@ -63,6 +63,7 @@ export const useInfiniteScroll = () => {
     drugList,
     search,
     setSearch,
+    defferedSearch,
     ...query, // gives you error, isLoading, fetchNextPage, etc.
   };
 };
