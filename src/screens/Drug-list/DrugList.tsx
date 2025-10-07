@@ -22,7 +22,6 @@ const DrugList = () => {
   } = useInfiniteScroll();
   const listRef = useRef<LegendListRef | null>(null);
   useEffect(() => {
-    console.log("ref", listRef.current);
     listRef.current?.scrollToOffset?.({ offset: 0, animated: true });
   }, [defferedSearch]);
 

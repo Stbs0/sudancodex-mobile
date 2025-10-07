@@ -33,9 +33,9 @@ const CardModal = () => {
               <View className="flex-row ">
                 <Text>
                   <Text className=" font-extrabold text-neutral-700   dark:text-blue-200  ">
-                    {brandName ||
-                      "No Available Data" + " " + strength ||
-                      "No Available Data"}
+                    {(brandName || "No Available Data") +
+                      " " +
+                      (strength || "No Available Data")}
                   </Text>
                   <Text className="font-bold"> — </Text>
                   <Text className="dark:text-rose-400 text-rose-500">
