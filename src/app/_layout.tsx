@@ -22,6 +22,7 @@ import { useColorScheme } from "nativewind";
 import React, { useEffect } from "react";
 import "react-native-reanimated";
 import "../global.css";
+import "../i18next";
 
 SplashScreen.preventAutoHideAsync();
 
