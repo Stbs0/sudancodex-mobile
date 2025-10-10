@@ -22,7 +22,7 @@ import { useColorScheme } from "nativewind";
 import React, { useEffect } from "react";
 import "react-native-reanimated";
 import "../global.css";
-import "../i18next";
+import "../lib/i18next";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -77,7 +77,7 @@ function RootLayoutNav() {
     if (userLoading) {
       return;
     }
-    SplashScreen.hideAsync();
+    // SplashScreen.hideAsync();
 
     // Debounce combined loading state to prevent UI flicker
     // see: https://github.com/Stbs0/sudancodex-mobile/pull/15

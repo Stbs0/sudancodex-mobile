@@ -1,6 +1,7 @@
 import { Icon } from "@/components/ui/icon";
 import { Stack } from "expo-router";
 import { Info } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 const Tour = ({
   tintColor,
 }: {
@@ -10,6 +11,7 @@ const Tour = ({
   return <Icon className="size-6 mr-4" color={tintColor} as={Info} />;
 };
 export default function DrugListLayout() {
+  const { t } = useTranslation();
   return (
     <Stack>
       <Stack.Screen
@@ -17,7 +19,7 @@ export default function DrugListLayout() {
         options={{
           headerRight: (props) => <Tour {...props} />,
 
-          title: "Drug List",
+          title: t("drugList.title"),
         }}
       />
       <Stack.Screen

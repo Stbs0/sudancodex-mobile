@@ -7,7 +7,10 @@ export const occupationEnum = z.enum([
   "Other",
 ]);
 export type OccupationEnumType = z.infer<typeof occupationEnum>;
+
 const phoneRegex = /^\+\d{1,3}\s?\d{7,12}$/;
+const englishOnlyRegex = /^[A-Za-z\s]+$/; // ✅ English letters and spaces only
+
 export const tellUsMoreSchema = z.object({
   age: z
     .string()
@@ -17,6 +20,7 @@ export const tellUsMoreSchema = z.object({
       const num = parseInt(val, 10);
       return num >= 1 && num <= 120;
     }, "Age must be between 1 and 120"),
+
   phoneNumber: z
     .string()
     .trim()
@@ -26,9 +30,14 @@ export const tellUsMoreSchema = z.object({
       phoneRegex,
       "Phone number must begin with country code, e.g. +249912345678",
     ),
-  university: z.string().trim().nonempty({
-    message: "University is required",
-  }),
+
+  university: z
+    .string()
+    .trim()
+    .nonempty("University is required")
+    .regex(englishOnlyRegex, "University name must be in English only"),
+
   occupation: occupationEnum,
 });
+
 export type tellUsMoreSchemaType = z.infer<typeof tellUsMoreSchema>;

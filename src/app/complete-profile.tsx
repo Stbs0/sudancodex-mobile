@@ -26,31 +26,53 @@ import { getAuth, signOut } from "@react-native-firebase/auth";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm, type Control } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-// import { occupationEnum } from "@/lib/schemas";
-// import { OccupationEnumType } from "@/lib/schemas";
 
 const SelectOccupation = ({
   control,
 }: {
   control: Control<tellUsMoreSchemaType>;
 }) => {
+  const { t } = useTranslation();
   return (
     <Controller
       control={control}
       name="occupation"
       render={({ field: { onChange, value }, fieldState: { error } }) => {
+        const Occupation = [
+          {
+            label: t("completeProfile.occupation.options.student"),
+            value: "Student",
+          },
+          {
+            label: t("completeProfile.occupation.options.administrator"),
+            value: "Administrator",
+          },
+          {
+            label: t("completeProfile.occupation.options.pharmacist"),
+            value: "Pharmacist",
+          },
+          {
+            label: t("completeProfile.occupation.options.other"),
+            value: "Other",
+          },
+        ];
         return (
           <>
             <Select onValueChange={(option) => onChange(option?.value)}>
               <SelectTrigger
                 className={cn("w-[180px]", error && "border-red-500")}
               >
-                <SelectValue placeholder="Select Occupation" />
+                <SelectValue
+                  placeholder={t("completeProfile.occupation.placeholder")}
+                />
               </SelectTrigger>
               <SelectContent className="w-[180px]">
                 <SelectGroup>
-                  <SelectLabel>Occupations</SelectLabel>
+                  <SelectLabel>
+                    {t("completeProfile.occupation.selectLabel")}
+                  </SelectLabel>
                   {Occupation.map((item) => (
                     <SelectItem
                       label={item.label}
@@ -77,6 +99,7 @@ const FieldMessage = ({ message }: { message: string | undefined }) => {
 };
 
 const CompleteProfileScreen = () => {
+  const { t } = useTranslation();
   const form = useForm({
     mode: "onBlur",
     resolver: zodResolver(tellUsMoreSchema),
@@ -92,22 +115,21 @@ const CompleteProfileScreen = () => {
       context.client.invalidateQueries({ queryKey: ["user"] });
     },
   });
-  console.log("error", error);
   // TODO: fix validation messages
   return (
     <View className="pt-safe flex-1">
       <Card className="m-4 ">
         <CardHeader>
-          <CardTitle>Complete Profile</CardTitle>
+          <CardTitle>{t("completeProfile.title")}</CardTitle>
           <CardDescription>
             <Text className="text-muted-foreground">
-              Please complete your profile information.
+              {t("completeProfile.description")}
             </Text>
           </CardDescription>
         </CardHeader>
         <CardContent className="gap-4">
           <View>
-            <Text className="mb-2">Age</Text>
+            <Text className="mb-2">{t("completeProfile.age.title")}</Text>
             <Controller
               control={form.control}
               name="age"
@@ -118,7 +140,7 @@ const CompleteProfileScreen = () => {
                 <>
                   <Input
                     className={error ? "border-red-500" : ""}
-                    placeholder="Enter your age"
+                    placeholder={t("completeProfile.age.placeholder")}
                     keyboardType="numeric"
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -130,7 +152,9 @@ const CompleteProfileScreen = () => {
             />
           </View>
           <View>
-            <Text className="mb-2">Phone Number</Text>
+            <Text className="mb-2">
+              {t("completeProfile.phoneNumber.title")}
+            </Text>
             <Controller
               control={form.control}
               name="phoneNumber"
@@ -141,7 +165,7 @@ const CompleteProfileScreen = () => {
                 <>
                   <Input
                     className={error ? "border-red-500" : ""}
-                    placeholder="Enter your phone number"
+                    placeholder={t("completeProfile.phoneNumber.placeholder")}
                     keyboardType="phone-pad"
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -154,7 +178,9 @@ const CompleteProfileScreen = () => {
           </View>
 
           <View>
-            <Text className="mb-2">University</Text>
+            <Text className="mb-2">
+              {t("completeProfile.university.title")}
+            </Text>
             <Controller
               control={form.control}
               name="university"
@@ -165,7 +191,7 @@ const CompleteProfileScreen = () => {
                 <>
                   <Input
                     className={error ? "border-red-500" : ""}
-                    placeholder="Enter your University"
+                    placeholder={t("completeProfile.university.placeholder")}
                     onChangeText={onChange}
                     onBlur={onBlur}
                     value={value}
@@ -177,25 +203,26 @@ const CompleteProfileScreen = () => {
             />
           </View>
           <View>
-            <Text className="mb-2">Occupation</Text>
+            <Text className="mb-2">
+              {t("completeProfile.occupation.title")}
+            </Text>
             <SelectOccupation control={form.control} />
           </View>
         </CardContent>
         <CardFooter>
           {error && (
             <Text className="text-red-500 text-sm">
-              Failed to update profile. Please try again.
+              {t("completeProfile.updateError")}
             </Text>
           )}
           <Button
             disabled={status === "pending"}
             className="w-full"
             onPress={form.handleSubmit((data) => {
-              console.log(data);
               mutate(data);
             })}
           >
-            <Text>Submit</Text>
+            <Text>{t("completeProfile.submit")}</Text>
           </Button>
         </CardFooter>
       </Card>
@@ -205,10 +232,5 @@ const CompleteProfileScreen = () => {
     </View>
   );
 };
-const Occupation = [
-  { label: "Student", value: "Student" },
-  { label: "Administrator", value: "Administrator" },
-  { label: "Pharmacist", value: "Pharmacist" },
-  { label: "Other", value: "Other" },
-];
+
 export default CompleteProfileScreen;
