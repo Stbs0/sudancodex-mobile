@@ -68,6 +68,14 @@ interface Resources {
       title: "Drug List";
     };
     settings: {
+      account: {
+        alertMessage: "This action cannot be undone.";
+        alertTitle: "Are you sure you want to delete your account?";
+        cancelBtn: "Cancel";
+        delete: "Delete Account";
+        deleteBtn: "Delete";
+        signOut: "Sign Out";
+      };
       cardInformation: "Card Information";
       cardInformationDescription: "Press on the text to get the information";
       changeLanguage: "Change Language";

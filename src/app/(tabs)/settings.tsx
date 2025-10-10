@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -16,14 +17,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import i18n from "@/lib/i18next";
+import { deleteUserData, signOutUser } from "@/services/usersServices";
 import type { Drug } from "@/types";
-import { getAuth, signOut } from "@react-native-firebase/auth";
 import * as Haptics from "expo-haptics";
 import { Moon, Sun } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View, type TextProps } from "react-native";
+import { Alert, ScrollView, View, type TextProps } from "react-native";
 import { useMMKVString } from "react-native-mmkv";
 
 /** Centralized language definitions */
@@ -39,11 +40,42 @@ const SettingsScreen = () => {
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const { t } = useTranslation();
   const isDark = colorScheme === "dark";
-
+  const onDeletePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    Alert.alert(
+      t("settings.account.alertTitle"),
+      t("settings.account.alertMessage"),
+      [
+        {
+          isPreferred: true,
+          text: t("settings.account.cancelBtn"),
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: t("settings.account.deleteBtn"),
+          onPress: async () => await deleteUserData(),
+          style: "destructive",
+        },
+      ],
+    );
+  };
+  const switchTheme = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    toggleColorScheme();
+  };
+  const onSignOut = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    signOutUser();
+  };
   return (
-    <View className="flex-1">
+    <ScrollView
+      contentContainerStyle={{ padding: 16, gap: 16 }}
+      showsVerticalScrollIndicator={true}
+      className="flex-1"
+    >
       {/* THEME SWITCH */}
-      <Card className="m-4 p-4">
+      <Card className="">
         <CardHeader>
           <CardTitle>{t("settings.changeTheme")}</CardTitle>
         </CardHeader>
@@ -53,14 +85,14 @@ const SettingsScreen = () => {
             nativeID="theme-switch"
             className="scale-150"
             checked={isDark}
-            onCheckedChange={toggleColorScheme}
+            onCheckedChange={switchTheme}
           />
           <Icon as={Moon} size={20} />
         </CardContent>
       </Card>
 
       {/* DRUG CARD PREVIEW */}
-      <Card className="m-4 p-4">
+      <Card className="">
         <CardHeader>
           <CardTitle>{t("settings.cardInformation")}</CardTitle>
           <CardDescription>
@@ -86,13 +118,19 @@ const SettingsScreen = () => {
       </Card>
       <LanguageChangeCard />
       {/* SIGN OUT */}
-      <TouchableOpacity
-        className="m-4 p-3 rounded-md bg-rose-500 active:bg-rose-600"
-        onPress={async () => await signOut(getAuth())}
-      >
-        <Text className="text-center text-white font-bold">Sign Out</Text>
-      </TouchableOpacity>
-    </View>
+      <View className=" gap-4">
+        <Button variant={"outline"} onPress={onSignOut}>
+          <Text className="text-center  font-bold">
+            {t("settings.account.signOut")}
+          </Text>
+        </Button>
+        <Button variant={"destructive"} onPress={onDeletePress}>
+          <Text className="text-center text-white font-bold">
+            {t("settings.account.delete")}
+          </Text>
+        </Button>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -139,7 +177,7 @@ const LanguageChangeCard = () => {
     };
   }
   return (
-    <Card className="m-4 p-4">
+    <Card className="">
       <CardHeader>
         <CardTitle>{t("settings.changeLanguage")}</CardTitle>
       </CardHeader>

@@ -5,8 +5,9 @@ import type {
   SaveUserReturnTypes,
   UserDataToSaveToFirebaseTypes,
 } from "@/types";
-import { getAuth } from "@react-native-firebase/auth";
+import { deleteUser, getAuth, signOut } from "@react-native-firebase/auth";
 import {
+  deleteDoc,
   doc,
   getDoc,
   getFirestore,
@@ -54,4 +55,16 @@ export const completeProfile = async (
   const userRef = docRef(auth.currentUser.uid);
 
   await updateDoc(userRef, data);
+};
+
+export const deleteUserData = async () => {
+  if (!auth.currentUser) {
+    return null;
+  }
+  const userRef = docRef(auth.currentUser.uid);
+  await Promise.allSettled([deleteDoc(userRef), deleteUser(auth.currentUser)]);
+};
+
+export const signOutUser = async () => {
+  await signOut(auth);
 };
