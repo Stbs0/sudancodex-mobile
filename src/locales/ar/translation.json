@@ -67,6 +67,14 @@
     "title": "قائمة الأدوية"
   },
   "settings": {
+    "account": {
+      "alertMessage": "لا يمكن التراجع عن هذا الإجراء.",
+      "alertTitle": "هل أنت متأكد من حذف حسابك؟",
+      "cancelBtn": "الغاء",
+      "delete": "حذف الحساب",
+      "deleteBtn": "حذف",
+      "signOut": "تسجيل الخروج"
+    },
     "cardInformation": "معلومات البطاقة",
     "cardInformationDescription": "اضغط على النص لعرض المعلومات",
     "changeLanguage": "تغيير اللغة",
