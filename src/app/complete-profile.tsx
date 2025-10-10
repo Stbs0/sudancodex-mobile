@@ -39,7 +39,7 @@ const SelectOccupation = ({
     <Controller
       control={control}
       name="occupation"
-      render={({ field: { onChange, value }, fieldState: { error } }) => {
+      render={({ field: { onChange }, fieldState: { error } }) => {
         const Occupation = [
           {
             label: t("completeProfile.occupation.options.student"),
@@ -110,9 +110,9 @@ const CompleteProfileScreen = () => {
     mutationFn: async (data: tellUsMoreSchemaType) => {
       return await completeProfile({ ...data, profileComplete: true });
     },
-    onSuccess(data, variables, onMutateResult, context) {
-      context.client.cancelQueries({ queryKey: ["user"] });
-      context.client.invalidateQueries({ queryKey: ["user"] });
+    async onSuccess(_data, _variables, _onMutateResult, context) {
+      await context.client.cancelQueries({ queryKey: ["user"] });
+      await context.client.invalidateQueries({ queryKey: ["user"] });
     },
   });
   // TODO: fix validation messages
