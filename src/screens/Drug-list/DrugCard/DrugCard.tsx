@@ -80,7 +80,7 @@ const DrugCard = memo(
       //   push
       // >
       <TouchableHighlight onPress={onPress} onLongPress={onLongPress}>
-        <Card className=" py-2 rounded-none border-2 shadow-black shadow-md">
+        <Card className=" py-2 rounded-none border-2 shadow-black shadow-md ">
           <CardContent className="gap-1">
             <View className="gap-1   ">
               <View className="flex-row ">

@@ -21,10 +21,12 @@ import React, {
   useRef,
   type Dispatch,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
 import CardModal from "./CardModal";
 
 const DrugList = () => {
+  const { t } = useTranslation();
   const {
     drugList,
     fetchNextPage,
@@ -78,7 +80,7 @@ const DrugList = () => {
           if (!hasNextPage && drugList.length > 0)
             return (
               <Text className="text-muted-foreground text-center py-2">
-                No more results
+                {t("drugList.noMoreResults")}
               </Text>
             );
           return null;
@@ -109,6 +111,17 @@ const SearchInput = ({
   setSearchBy: Dispatch<React.SetStateAction<keyof Drug>>;
   searchBy: keyof Drug;
 }) => {
+  const { t } = useTranslation();
+  const searchItems: { value: keyof Drug; label: string }[] = [
+    { value: "genericName", label: "Generic Name" },
+    { value: "brandName", label: "Brand Name" },
+    { value: "agentName", label: "Agent Name" },
+    { value: "companyName", label: "Company Name" },
+    { value: "countryOfOrigin", label: "Country of Origin" },
+    { value: "strength", label: "Strength" },
+    { value: "dosageFormName", label: "Dosage Form" },
+    { value: "packSize", label: "Pack Size" },
+  ];
   const [width, setWidth] = React.useState(0);
   const placeholder = searchItems.find(
     (item) => item.value === searchBy,
@@ -144,7 +157,7 @@ const SearchInput = ({
 
           <SelectContent side="top">
             <SelectLabel>
-              <Text>Search Term</Text>
+              <Text>{t("drugList.searchTerm")}</Text>
             </SelectLabel>
             <SelectSeparator />
             {searchItems.map((item) => (
@@ -163,14 +176,5 @@ const SearchInput = ({
     </View>
   );
 };
-const searchItems: { value: keyof Drug; label: string }[] = [
-  { value: "genericName", label: "Generic Name" },
-  { value: "brandName", label: "Brand Name" },
-  { value: "agentName", label: "Agent" },
-  { value: "companyName", label: "Company Name" },
-  { value: "countryOfOrigin", label: "Country of Origin" },
-  { value: "strength", label: "Strength" },
-  { value: "dosageFormName", label: "Dosage Form" },
-  { value: "packSize", label: "Pack Size" },
-];
+
 export default DrugList;
