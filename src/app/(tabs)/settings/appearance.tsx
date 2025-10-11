@@ -13,6 +13,37 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useMMKVString } from "react-native-mmkv";
 
+const Appearance = () => {
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const isDark = colorScheme === "dark";
+  const switchTheme = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    toggleColorScheme();
+  };
+  return (
+    <View className="p-4 gap-4 flex-1">
+      <Card className="">
+        <CardHeader>
+          <CardTitle className="text-lg">{t("settings.changeTheme")}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-row items-center justify-center gap-4">
+          <Icon as={Sun} size={20} />
+          <Switch
+            nativeID="theme-switch"
+            className="scale-150"
+            checked={isDark}
+            onCheckedChange={switchTheme}
+          />
+          <Icon as={Moon} size={20} />
+        </CardContent>
+      </Card>
+      <LanguageChangeCard />
+    </View>
+  );
+};
+
+export default Appearance;
+
 /** Centralized language definitions */
 const LANGUAGE_OPTIONS = [
   { label: "English", lang: "en" },
@@ -63,7 +94,9 @@ const LanguageChangeCard = () => {
   return (
     <Card className="">
       <CardHeader>
-        <CardTitle>{t("settings.changeLanguage")}</CardTitle>
+        <CardTitle className="text-lg">
+          {t("settings.changeLanguage")}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <RadioGroup value={lang} onValueChange={switchLanguage}>
@@ -78,34 +111,3 @@ const LanguageChangeCard = () => {
     </Card>
   );
 };
-
-const Appearance = () => {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-  const isDark = colorScheme === "dark";
-  const switchTheme = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    toggleColorScheme();
-  };
-  return (
-    <View>
-      <Card className="">
-        <CardHeader>
-          <CardTitle>{t("settings.changeTheme")}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex-row items-center justify-center gap-4">
-          <Icon as={Sun} size={20} />
-          <Switch
-            nativeID="theme-switch"
-            className="scale-150"
-            checked={isDark}
-            onCheckedChange={switchTheme}
-          />
-          <Icon as={Moon} size={20} />
-        </CardContent>
-      </Card>
-      <LanguageChangeCard />
-    </View>
-  );
-};
-
-export default Appearance;

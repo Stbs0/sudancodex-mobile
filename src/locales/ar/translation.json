@@ -79,9 +79,16 @@
     "cardInformationDescription": "اضغط على النص لعرض المعلومات",
     "changeLanguage": "تغيير اللغة",
     "changeTheme": "تغيير المظهر",
+    "header": "الاعدادات",
     "languageChange": "تم تغيير اللغة إلى {{lang}}",
     "restartNow": "إعادة التشغيل الآن",
     "restartRequired": "يجب إعادة تشغيل التطبيق لتطبيق التغييرات",
+    "screens": {
+      "about": "نحن",
+      "account": "الحساب",
+      "appearanceAndLang": "المظهر و اللغة",
+      "help": "مساعدة"
+    },
     "tooltips": {
       "brandAndStrength": "هذا هو الاسم التجاري وتركيز الدواء",
       "distributor": "هذا هو اسم الوكيل أو الموزع، مثل شركة أمي فارما",

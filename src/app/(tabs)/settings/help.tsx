@@ -115,10 +115,12 @@ const Help = () => {
   const { t } = useTranslation();
 
   return (
-    <View>
+    <View className="p-4 gap-4 flex-1">
       <Card className="">
         <CardHeader>
-          <CardTitle>{t("settings.cardInformation")}</CardTitle>
+          <CardTitle className="text-lg">
+            {t("settings.cardInformation")}
+          </CardTitle>
           <CardDescription>
             {t("settings.cardInformationDescription")}
           </CardDescription>
