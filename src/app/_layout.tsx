@@ -94,6 +94,12 @@ function RootLayoutNav() {
         <Stack.Protected guard={user?.profileComplete === true}>
           <Stack.Screen name="(tabs)" />
         </Stack.Protected>
+        <Stack.Protected guard={user?.profileComplete === true}>
+          <Stack.Screen
+            name="about"
+            options={{ title: "About", headerShown: true }}
+          />
+        </Stack.Protected>
         <Stack.Protected guard={user?.profileComplete === false}>
           <Stack.Screen name="complete-profile" />
         </Stack.Protected>
