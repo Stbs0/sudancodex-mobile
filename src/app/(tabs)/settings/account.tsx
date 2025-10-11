@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { deleteUserData, signOutUser } from "@/services/usersServices";
 import * as Haptics from "expo-haptics";
-import { Link } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Text, View } from "react-native";
+import { Alert, View } from "react-native";
 
 const Account = () => {
   const { t } = useTranslation();
@@ -34,12 +34,7 @@ const Account = () => {
     signOutUser();
   };
   return (
-    <View className=" gap-4">
-      <Link href={"/about"} asChild>
-        <Button variant={"outline"}>
-          <Text className="text-center  font-bold">{t("settings.about")}</Text>
-        </Button>
-      </Link>
+    <View className="p-4 gap-4">
       <Button variant={"outline"} onPress={onSignOut}>
         <Text className="text-center  font-bold">
           {t("settings.account.signOut")}
