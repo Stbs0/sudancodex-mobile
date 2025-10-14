@@ -1,4 +1,20 @@
 {
+  "about": {
+    "contactEmail": "البريد الإلكتروني: mohammedjrt+sudancodexsupport@gmail.com",
+    "contactTitle": "التواصل",
+    "dataSourceDescription": "تم استخراج بيانات دليل الأدوية السوداني من",
+    "dataSourceLinkText": "تقرير المجلس القومي للأدوية والسموم",
+    "dataSourceTitle": "مصادر البيانات",
+    "dataSourceYear": "لعام 2023.",
+    "developerDescription": "تم تطوير التطبيق بواسطة محمد محمود — صيدلي ومبرمج هاوٍ.",
+    "developerTitle": "المطور",
+    "privacyPolicy": "سياسة الخصوصية",
+    "purposeDescription": "يساعد هذا التطبيق الصيادلة ومقدمي الرعاية الصحية في السودان في معرفة العلامات التجارية المسجلة للأدوية، والأسماء العلمية، والشركات المصنعة — بهدف إنشاء سجل وطني قائم على المجتمع للأدوية.",
+    "purposeTitle": "الهدف",
+    "rightsReserved": "جميع الحقوق محفوظة.",
+    "title": "حول التطبيق",
+    "versionTitle": "الإصدار"
+  },
   "auth": {
     "title": "التسجيل أو تسجيل الدخول",
     "welcome": "مرحباً!"
@@ -80,6 +96,12 @@
     "changeLanguage": "تغيير اللغة",
     "changeTheme": "تغيير المظهر",
     "header": "الاعدادات",
+    "help": {
+      "whatsApp": {
+        "btn": "تريد مساعدة؟ تحدث معي على الواتس اب",
+        "message": "اشرح المشكلة و سوي سكريين شوت اذا امكن"
+      }
+    },
     "languageChange": "تم تغيير اللغة إلى {{lang}}",
     "restartNow": "إعادة التشغيل الآن",
     "restartRequired": "يجب إعادة تشغيل التطبيق لتطبيق التغييرات",
