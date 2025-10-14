@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,9 +12,73 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { Drug } from "@/types";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import * as Linking from "expo-linking";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View, type TextProps } from "react-native";
+import { Alert, Text, View, type TextProps } from "react-native";
+
+const Help = () => {
+  const { t } = useTranslation();
+
+  return (
+    <View className="p-4 gap-4 flex-1">
+      <Card className="">
+        <CardHeader>
+          <CardTitle className="text-lg">
+            {t("settings.cardInformation")}
+          </CardTitle>
+          <CardDescription>
+            {t("settings.cardInformationDescription")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DrugCardSettings
+            {...{
+              agentName: "Raheeg Medical Co.Ltd",
+              brandName: "Glucar",
+              companyName: "Glenmark Pharmaceuticals Ltd",
+              countryOfOrigin: "India",
+              dosageFormName: "Tablet",
+              drugInfoRef: "923394",
+              genericName: "Acarbose",
+              no: "1974",
+              packSize: "100 Tablets",
+              strength: "50 mg",
+            }}
+          />
+        </CardContent>
+      </Card>
+      <WhatsAppBtn />
+    </View>
+  );
+};
+const WhatsAppBtn = () => {
+  const { t } = useTranslation();
+  const phoneNumber = "+966565621620"; // Replace with your desired phone number
+  const message = t("settings.help.whatsApp.message");
+  const whatsappUrl = `https://wa.me/${phoneNumber.replace("+", "")}?text=${encodeURIComponent(message)}`;
+  const openWhatsApp = async () => {
+    try {
+      await Linking.openURL(whatsappUrl);
+    } catch (error) {
+      console.error("Error opening WhatsApp:", error);
+      Alert.alert("Error", "Failed to open WhatsApp.");
+    }
+  };
+  return (
+    <Button
+      className="bg-green-400 items-center justify-center"
+      onPress={openWhatsApp}
+    >
+      <Text className="text-white dark:text-white">
+        {t("settings.help.whatsApp.btn")}
+      </Text>
+      <FontAwesome6 name="whatsapp" size={24} color="#fff" />
+    </Button>
+  );
+};
+export default Help;
 
 type TooltipTextProps = TextProps & {
   tooltip: string;
@@ -111,39 +176,3 @@ const DrugCardSettings = ({
     </Card>
   );
 };
-const Help = () => {
-  const { t } = useTranslation();
-
-  return (
-    <View className="p-4 gap-4 flex-1">
-      <Card className="">
-        <CardHeader>
-          <CardTitle className="text-lg">
-            {t("settings.cardInformation")}
-          </CardTitle>
-          <CardDescription>
-            {t("settings.cardInformationDescription")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DrugCardSettings
-            {...{
-              agentName: "Raheeg Medical Co.Ltd",
-              brandName: "Glucar",
-              companyName: "Glenmark Pharmaceuticals Ltd",
-              countryOfOrigin: "India",
-              dosageFormName: "Tablet",
-              drugInfoRef: "923394",
-              genericName: "Acarbose",
-              no: "1974",
-              packSize: "100 Tablets",
-              strength: "50 mg",
-            }}
-          />
-        </CardContent>
-      </Card>
-    </View>
-  );
-};
-
-export default Help;
