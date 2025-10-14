@@ -7,12 +7,12 @@ import { useTranslation } from "react-i18next";
 export default function TabLayout() {
   const { t } = useTranslation();
   return (
-    <Tabs>
+    <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen
         name="drug-list"
         options={{
           tabBarLabel: t("tabs.drugList"),
-          headerShown: false,
+
           tabBarIcon: (props) => <Icon as={List} {...props} />,
         }}
       />
