@@ -16,14 +16,20 @@ const Account = () => {
       t("settings.account.alertMessage"),
       [
         {
-          isPreferred: true,
+          // isPreferred: true,
           text: t("settings.account.cancelBtn"),
           onPress: () => {},
           style: "cancel",
         },
         {
           text: t("settings.account.deleteBtn"),
-          onPress: async () => await deleteUserData(),
+          onPress: async () => {
+            try {
+              await deleteUserData();
+            } catch (error) {
+              Alert.alert("Error", "Failed to delete user data.");
+            }
+          },
           style: "destructive",
         },
       ],
@@ -31,7 +37,11 @@ const Account = () => {
   };
   const onSignOut = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    signOutUser();
+    try {
+      signOutUser();
+    } catch (error) {
+      Alert.alert("Error", "Failed to sign out.");
+    }
   };
   return (
     <View className="p-4 gap-4">

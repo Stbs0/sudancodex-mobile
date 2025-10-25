@@ -83,32 +83,42 @@ const About = () => {
       <View>
         <Text className="text-lg font-semibold mt-6">Social</Text>
         <View className="flex-row justify-around">
-          <Button variant={"ghost"} className="h-auto">
-            <FontAwesome6
-              name="github"
-              size={24}
-              color={isDark ? "#fff" : "000"}
-              onPress={() =>
-                Linking.openURL("https://github.com/stbs0/sudancodex-mobile")
-              }
-            />
-          </Button>
-          <Button className="h-auto" variant={"ghost"}>
-            <FontAwesome6
-              name="x-twitter"
-              size={24}
-              color={isDark ? "#fff" : "000"}
-              onPress={() => Linking.openURL("https://x.com/stbs66")}
-            />
-          </Button>
-          <Button className="h-auto" variant={"ghost"}>
+          <Button
+            className="h-auto"
+            variant="ghost"
+            onPress={() => Linking.openURL("https://www.facebook.com/stbs66/")}
+            accessibilityLabel="Open Facebook profile"
+          >
             <FontAwesome6
               name="facebook"
               size={24}
-              color={isDark ? "#fff" : "000"}
-              onPress={() =>
-                Linking.openURL("https://www.facebook.com/stbs66/")
-              }
+              color={isDark ? "#fff" : "#000"}
+            />
+          </Button>
+          <Button
+            className="h-auto"
+            variant="ghost"
+            onPress={() => Linking.openURL("https://x.com/stbs66")}
+            accessibilityLabel="Open X (Twitter) profile"
+          >
+            <FontAwesome6
+              name="x-twitter"
+              size={24}
+              color={isDark ? "#fff" : "#000"}
+            />
+          </Button>
+          <Button
+            variant="ghost"
+            className="h-auto"
+            onPress={() =>
+              Linking.openURL("https://github.com/stbs0/sudancodex-mobile")
+            }
+            accessibilityLabel="Open GitHub repository"
+          >
+            <FontAwesome6
+              name="github"
+              size={24}
+              color={isDark ? "#fff" : "#000"}
             />
           </Button>
         </View>

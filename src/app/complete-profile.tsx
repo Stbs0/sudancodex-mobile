@@ -39,7 +39,7 @@ const SelectOccupation = ({
     <Controller
       control={control}
       name="occupation"
-      render={({ field: { onChange }, fieldState: { error } }) => {
+      render={({ field: { onChange, value }, fieldState: { error } }) => {
         const Occupation = [
           {
             label: t("completeProfile.occupation.options.student"),
@@ -58,9 +58,13 @@ const SelectOccupation = ({
             value: "Other",
           },
         ];
+        const options = Occupation.find((item) => item.value === value);
         return (
           <>
-            <Select onValueChange={(option) => onChange(option?.value)}>
+            <Select
+              onValueChange={(option) => onChange(option?.value)}
+              value={options}
+            >
               <SelectTrigger
                 className={cn("w-[180px]", error && "border-red-500")}
               >

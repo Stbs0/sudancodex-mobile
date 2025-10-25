@@ -5,7 +5,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import i18n from "@/lib/i18next";
 import * as Haptics from "expo-haptics";
-import { t } from "i18next";
 import { Moon, Sun } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
 import React, { useCallback } from "react";
@@ -15,6 +14,7 @@ import { useMMKVString } from "react-native-mmkv";
 
 const Appearance = () => {
   const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { t } = useTranslation();
   const isDark = colorScheme === "dark";
   const switchTheme = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

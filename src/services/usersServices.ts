@@ -62,7 +62,7 @@ export const deleteUserData = async () => {
     return null;
   }
   const userRef = docRef(auth.currentUser.uid);
-  await Promise.allSettled([deleteDoc(userRef), deleteUser(auth.currentUser)]);
+  await Promise.all([deleteDoc(userRef), deleteUser(auth.currentUser)]);
 };
 
 export const signOutUser = async () => {

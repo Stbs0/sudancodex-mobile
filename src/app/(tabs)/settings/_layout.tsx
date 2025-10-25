@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-export default function DrugListLayout() {
+export default function SettingsLayout() {
   const { t } = useTranslation();
   return (
     <Stack screenOptions={{ headerBackTitle: "Back" }}>
@@ -9,19 +9,19 @@ export default function DrugListLayout() {
       <Stack.Screen
         name="appearance"
         options={{
-          title: "Appearance",
+          title: t("settings.screens.appearanceAndLang"),
         }}
       />
       <Stack.Screen
         name="help"
         options={{
-          title: "Help",
+          title: t("settings.screens.help"),
         }}
       />
       <Stack.Screen
         name="account"
         options={{
-          title: "Account",
+          title: t("settings.screens.account"),
         }}
       />
     </Stack>
