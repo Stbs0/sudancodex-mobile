@@ -41,19 +41,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (fireBaseUser) {
         try {
           await queryClient.prefetchQuery({
-            queryKey: ["user", fireBaseUser.uid],
+            queryKey: ["user"],
             queryFn: async () => await getUser(fireBaseUser.uid),
           });
         } catch (error) {
           console.error("Failed to prefetch user data:", error);
           // Handle the error appropriately, maybe set an error state
-          queryClient.setQueryData(["user", fireBaseUser.uid], undefined);
+          queryClient.setQueryData(["user"], undefined);
           Alert.alert("Error", "Failed to prefetch user data.");
         }
         setUserAuth(fireBaseUser);
       } else {
         queryClient.removeQueries({
-          queryKey: ["user", userAuth?.uid],
+          queryKey: ["user"],
           exact: true,
         });
         setUserAuth(null);

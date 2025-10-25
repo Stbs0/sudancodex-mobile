@@ -58,9 +58,13 @@ const SelectOccupation = ({
             value: "Other",
           },
         ];
+        const options = Occupation.find((item) => item.value === value);
         return (
           <>
-            <Select onValueChange={(option) => onChange(option?.value)}>
+            <Select
+              onValueChange={(option) => onChange(option?.value)}
+              value={options}
+            >
               <SelectTrigger
                 className={cn("w-[180px]", error && "border-red-500")}
               >
@@ -110,9 +114,9 @@ const CompleteProfileScreen = () => {
     mutationFn: async (data: tellUsMoreSchemaType) => {
       return await completeProfile({ ...data, profileComplete: true });
     },
-    onSuccess(data, variables, onMutateResult, context) {
-      context.client.cancelQueries({ queryKey: ["user"] });
-      context.client.invalidateQueries({ queryKey: ["user"] });
+    async onSuccess(_data, _variables, _onMutateResult, context) {
+      await context.client.cancelQueries({ queryKey: ["user"] });
+      await context.client.invalidateQueries({ queryKey: ["user"] });
     },
   });
   // TODO: fix validation messages

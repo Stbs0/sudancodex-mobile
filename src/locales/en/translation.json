@@ -1,4 +1,20 @@
 {
+  "about": {
+    "contactEmail": "Email: mohammedjrt+sudancodexsupport@gmail.com",
+    "contactTitle": "Contact",
+    "dataSourceDescription": "The Sudan drug index data was extracted from the",
+    "dataSourceLinkText": "National Medicines and Poisons Board report",
+    "dataSourceTitle": "Data Sources",
+    "dataSourceYear": "from 2023.",
+    "developerDescription": "Developed by Mohammed Mahmoud — Pharmacist & hobbyist coder.",
+    "developerTitle": "Developer",
+    "privacyPolicy": "Privacy Policy",
+    "purposeDescription": "This app helps pharmacists and healthcare professionals in Sudan is about registered drug brands, their generics, and manufacturers — creating a community-driven national drug registry.",
+    "purposeTitle": "Purpose",
+    "rightsReserved": "All rights reserved.",
+    "title": "About This App",
+    "versionTitle": "Version"
+  },
   "auth": {
     "title": "Sign up or Log in",
     "welcome": "Welcome!"
@@ -67,13 +83,34 @@
     "title": "Drug List"
   },
   "settings": {
+    "account": {
+      "alertMessage": "This action cannot be undone.",
+      "alertTitle": "Are you sure you want to delete your account?",
+      "cancelBtn": "Cancel",
+      "delete": "Delete Account",
+      "deleteBtn": "Delete",
+      "signOut": "Sign Out"
+    },
     "cardInformation": "Card Information",
     "cardInformationDescription": "Press on the text to get the information",
     "changeLanguage": "Change Language",
     "changeTheme": "Change Theme",
+    "header": "Settings",
+    "help": {
+      "whatsApp": {
+        "btn": "Want help? contact me on WhatsApp",
+        "message": "Explain the problem and please provide any screenshot"
+      }
+    },
     "languageChange": "The language has been changed to {{lang}}",
     "restartNow": "Restart Now",
     "restartRequired": "The app needs to be restarted to apply the changes",
+    "screens": {
+      "about": "About",
+      "account": "Account",
+      "appearanceAndLang": "Appearance and Language",
+      "help": "Help"
+    },
     "tooltips": {
       "brandAndStrength": "This is the brand/trade name and the concentration/strength",
       "distributor": "This is the agent name i.e. the distributor. for example Amipharma",
