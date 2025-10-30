@@ -35,10 +35,10 @@ onlineManager.setEventListener((setOnline) => {
   return eventSubscription.remove;
 });
 
-// if (__DEV__) {
-//   connectAuthEmulator(getAuth(), "http://192.168.1.100:9099");
-//   connectFirestoreEmulator(getFirestore(), "192.168.1.100", 8080);
-// }
+if (__DEV__) {
+  connectAuthEmulator(getAuth(), "http://192.168.1.100:9099");
+  connectFirestoreEmulator(getFirestore(), "192.168.1.100", 8080);
+}
 
 export { ErrorBoundary } from "expo-router";
 
@@ -47,7 +47,6 @@ if (__DEV__ && !process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID) {
     "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID is not set. Google Sign-In may fail.",
   );
 }
-console.log(process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID || "",
 });
