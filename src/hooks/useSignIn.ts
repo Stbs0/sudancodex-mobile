@@ -12,10 +12,12 @@ import {
   isSuccessResponse,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
+import { usePostHog } from "posthog-react-native";
 import { useState } from "react";
 
 const useSignIn = () => {
   const [loading, setLoading] = useState(false);
+  const posthog = usePostHog();
 
   const signIn = async () => {
     setLoading(true);
@@ -48,10 +50,12 @@ const useSignIn = () => {
             profileComplete: false,
           };
           await SaveUserInFireStore(user, UserCred.user.uid);
+          posthog.capture("new_user_sign_up");
         }
       } else {
         // sign in was cancelled by user
         console.log("else");
+        posthog.capture("sign_in_cancelled");
       }
     } catch (error) {
       console.error("Error signing in with Google", error);
@@ -60,10 +64,15 @@ const useSignIn = () => {
           case statusCodes.IN_PROGRESS:
             console.log("inprogress");
             // operation (eg. sign in) already in progress
-
+            posthog.captureException(error, {
+              label: "inprogress",
+            });
             break;
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
             // Android only, play services not available or outdated
+            posthog.captureException(error, {
+              label: "play_services_not_available",
+            });
             break;
           case statusCodes.SIGN_IN_CANCELLED:
             // user cancelled the flow

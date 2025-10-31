@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
 } from "@react-native-firebase/auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { usePostHog } from "posthog-react-native";
 import React, { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Alert } from "react-native";
 interface AuthProviderProps {
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authLoading, setAuthLoading] = useState(true);
   const [userAuth, setUserAuth] = useState<null | FirebaseAuthTypes.User>(null);
   const queryClient = useQueryClient();
-
+  const posthog = usePostHog();
   const {
     isLoading,
     isError,
@@ -64,6 +65,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     return unsubscribe;
   }, [queryClient]);
+
+  useEffect(() => {
+    if (error) {
+      posthog.captureException(error, {
+        label: "fetch user error",
+      });
+    }
+  }, [posthog, error]);
+
   const userLoading = useMemo(
     () => isLoading || authLoading,
     [isLoading, authLoading],

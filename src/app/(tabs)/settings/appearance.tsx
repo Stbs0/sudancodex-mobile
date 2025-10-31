@@ -7,9 +7,10 @@ import i18n from "@/lib/i18next";
 import * as Haptics from "expo-haptics";
 import { Moon, Sun } from "lucide-react-native";
 import { useColorScheme } from "nativewind";
+import { usePostHog } from "posthog-react-native";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useMMKVString } from "react-native-mmkv";
 
 const Appearance = () => {
@@ -55,6 +56,7 @@ const LANGUAGE_OPTIONS = [
 const LanguageChangeCard = () => {
   const [lang, setLang] = useMMKVString("user.settings.language.code");
   const { t } = useTranslation();
+  const posthog = usePostHog();
   const switchLanguage = useCallback(
     async (newLang: string) => {
       const currentLang = i18n.language;
@@ -67,7 +69,15 @@ const LanguageChangeCard = () => {
       // Store user language
 
       // Change language in i18n
-      await i18n.changeLanguage(langDef.lang);
+      try {
+        await i18n.changeLanguage(langDef.lang);
+        posthog.capture("language_change");
+      } catch (error) {
+        console.error("Error changing language:", error);
+        Alert.alert("Error", "Failed to change language.");
+        posthog.captureException(error, { label: "language_change_error" });
+        return;
+      }
       setLang(langDef.lang);
 
       // setRtl(!rtl);
@@ -83,7 +93,7 @@ const LanguageChangeCard = () => {
       //   ],
       // );
     },
-    [setLang],
+    [setLang, posthog],
   );
   function onLabelPress(lang: string) {
     return () => {
