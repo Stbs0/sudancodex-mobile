@@ -41,6 +41,7 @@ const DrugList = () => {
     deferredSearch,
   } = useInfiniteScroll();
   const listRef = useRef<LegendListRef | null>(null);
+
   useEffect(() => {
     listRef.current?.scrollToOffset?.({ offset: 0, animated: true });
   }, [deferredSearch]);
@@ -50,10 +51,13 @@ const DrugList = () => {
   }, []);
 
   const debouncedSetSearch = useMemo(() => {
-    let t: number | null = null;
+    const timeoutRef = {
+      current: null as ReturnType<typeof setTimeout> | null,
+    };
+
     return (q: string) => {
-      if (t) clearTimeout(t);
-      t = setTimeout(() => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
         setSearch(q);
       }, 500);
     };

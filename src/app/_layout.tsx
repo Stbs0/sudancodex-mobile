@@ -1,4 +1,4 @@
-import { useAnalyticsPosthog } from "@/hooks/analaytics";
+import { useAnalyticsPosthog } from "@/hooks/analytics";
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { AuthProvider } from "@/providers/AuthProvider";

@@ -77,6 +77,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   experiments: {
     typedRoutes: true,
+    reactCompiler: true,
   },
   owner: "stbs0",
   extra: {
