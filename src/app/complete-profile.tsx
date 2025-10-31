@@ -24,6 +24,7 @@ import { completeProfile } from "@/services/usersServices";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getAuth, signOut } from "@react-native-firebase/auth";
 import { useMutation } from "@tanstack/react-query";
+import { usePostHog } from "posthog-react-native";
 import React from "react";
 import { Controller, useForm, type Control } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -104,6 +105,7 @@ const FieldMessage = ({ message }: { message: string | undefined }) => {
 
 const CompleteProfileScreen = () => {
   const { t } = useTranslation();
+  const posthog = usePostHog();
   const form = useForm({
     mode: "onBlur",
     resolver: zodResolver(tellUsMoreSchema),
@@ -115,8 +117,12 @@ const CompleteProfileScreen = () => {
       return await completeProfile({ ...data, profileComplete: true });
     },
     async onSuccess(_data, _variables, _onMutateResult, context) {
+      posthog.capture("complete_profile");
       await context.client.cancelQueries({ queryKey: ["user"] });
       await context.client.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError(error) {
+      posthog.captureException(error, { label: "complete_profile_error" });
     },
   });
   // TODO: fix validation messages

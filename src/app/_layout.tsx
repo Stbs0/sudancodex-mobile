@@ -1,6 +1,8 @@
+import { useAnalyticsPosthog } from "@/hooks/analaytics";
 import { useAuth } from "@/hooks/useAuth";
 import { NAV_THEME } from "@/lib/theme";
 import { AuthProvider } from "@/providers/AuthProvider";
+import PHProvider from "@/providers/PHProvider";
 import { connectAuthEmulator, getAuth } from "@react-native-firebase/auth";
 import {
   connectFirestoreEmulator,
@@ -53,29 +55,33 @@ GoogleSignin.configure({
 
 export default function RootLayout() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SQLite.SQLiteProvider
-        databaseName="mergedDrug.db"
-        assetSource={{
-          assetId: require("../assets/data/mergedDrug.db"),
-          forceOverwrite: true,
-        }}
-      >
-        <AuthProvider>
-          <RootLayoutNav />
-        </AuthProvider>
-      </SQLite.SQLiteProvider>
-    </QueryClientProvider>
+    <PHProvider>
+      <QueryClientProvider client={queryClient}>
+        <SQLite.SQLiteProvider
+          databaseName="mergedDrug.db"
+          assetSource={{
+            assetId: require("../assets/data/mergedDrug.db"),
+            forceOverwrite: true,
+          }}
+        >
+          <AuthProvider>
+            <RootLayoutNav />
+          </AuthProvider>
+        </SQLite.SQLiteProvider>
+      </QueryClientProvider>
+    </PHProvider>
   );
 }
 
 function RootLayoutNav() {
   const { user, userLoading } = useAuth();
   const { colorScheme } = useColorScheme();
+  useAnalyticsPosthog();
   useEffect(() => {
     if (userLoading) {
       return;
     }
+
     // SplashScreen.hideAsync();
 
     // Debounce combined loading state to prevent UI flicker

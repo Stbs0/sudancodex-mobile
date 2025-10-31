@@ -2,12 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { deleteUserData, signOutUser } from "@/services/usersServices";
 import * as Haptics from "expo-haptics";
+import { usePostHog } from "posthog-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 
 const Account = () => {
   const { t } = useTranslation();
+  const posthog = usePostHog();
 
   const onDeletePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -26,7 +28,11 @@ const Account = () => {
           onPress: async () => {
             try {
               await deleteUserData();
+              posthog.capture("account deleted");
             } catch (error) {
+              posthog.captureException(error, {
+                label: "failed to delete account",
+              });
               Alert.alert("Error", "Failed to delete user data.");
             }
           },
@@ -35,11 +41,14 @@ const Account = () => {
       ],
     );
   };
-  const onSignOut = () => {
+  const onSignOut = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     try {
-      signOutUser();
+      await signOutUser();
+      posthog.capture("signed out");
     } catch (error) {
+      posthog.captureException(error, { label: "failed to sign out" });
+
       Alert.alert("Error", "Failed to sign out.");
     }
   };

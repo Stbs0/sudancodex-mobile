@@ -14,6 +14,7 @@ import {
 import type { Drug } from "@/types";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import * as Linking from "expo-linking";
+import { usePostHog } from "posthog-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Text, View, type TextProps } from "react-native";
@@ -55,13 +56,16 @@ const Help = () => {
 };
 const WhatsAppBtn = () => {
   const { t } = useTranslation();
+  const posthog = usePostHog();
   const phoneNumber = "+966565621620"; // Replace with your desired phone number
   const message = t("settings.help.whatsApp.message");
   const whatsappUrl = `https://wa.me/${phoneNumber.replace("+", "")}?text=${encodeURIComponent(message)}`;
   const openWhatsApp = async () => {
     try {
       await Linking.openURL(whatsappUrl);
+      posthog.capture("whatsApp_btn_clicked");
     } catch (error) {
+      posthog.captureException(error, { label: "whatsApp_btn_error" });
       console.error("Error opening WhatsApp:", error);
       Alert.alert("Error", "Failed to open WhatsApp.");
     }
