@@ -17,10 +17,18 @@ export function SignUpForm() {
     <View className="gap-6">
       <Card className="border-border/0 sm:border-border shadow-none sm:shadow-sm sm:shadow-black/5">
         <CardHeader>
-          <CardTitle className="text-center text-xl sm:text-left">
+          <CardTitle
+            className="text-center text-xl sm:text-left"
+            accessibilityLabel="auth-title"
+            testID="auth-title"
+          >
             {t("auth.title")}
           </CardTitle>
-          <CardDescription className="text-center sm:text-left">
+          <CardDescription
+            className="text-center sm:text-left"
+            accessibilityLabel="auth-description"
+            testID="auth-description"
+          >
             {t("auth.welcome")}
           </CardDescription>
         </CardHeader>
@@ -30,6 +38,9 @@ export function SignUpForm() {
             color={GoogleSigninButton.Color.Dark}
             onPress={signIn}
             disabled={loading}
+            // Stable identifiers for E2E tests (Maestro / Detox / Appium)
+            accessibilityLabel="auth-google-signin"
+            testID="auth-google-signin"
           />
         </CardContent>
       </Card>

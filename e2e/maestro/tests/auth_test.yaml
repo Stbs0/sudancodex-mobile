@@ -1,0 +1,35 @@
+# Maestro auth screen test
+# Asserts elements exist and optionally taps the Google Sign-in button.
+# Update the device invocation when running (see e2e/maestro/README.md)
+
+steps:
+  - name: Wait for app
+    action: wait
+    params:
+      ms: 1500
+
+  - name: Assert auth title exists
+    action: assert_exists
+    params:
+      accessibility_label: "auth-title"
+
+  - name: Assert auth welcome exists
+    action: assert_exists
+    params:
+      accessibility_label: "auth-description"
+
+  - name: Assert google sign-in exists
+    action: assert_exists
+    params:
+      accessibility_label: "auth-google-signin"
+
+  # Uncomment to tap the sign-in button. The real sign-in flow may prompt external UI.
+  # - name: Tap google sign-in
+  #   action: tap
+  #   params:
+  #     accessibility_label: "auth-google-signin"
+
+  - name: Wait briefly
+    action: wait
+    params:
+      ms: 500

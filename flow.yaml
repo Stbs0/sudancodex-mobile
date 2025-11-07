@@ -1,0 +1,6 @@
+# flow.yaml
+
+appId: app.sudancodex.mobile
+---
+- launchApp
+- tapOn: "welcom"
